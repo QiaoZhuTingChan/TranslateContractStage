@@ -66,7 +66,7 @@ import com.jyd.translateContractStage.POIUtil;
 
 public class App {
 
-	private static final String logpath = "/home/aa/Desktop/laoda/logerror_zhengzhou2.txt";
+	private static final String logpath = "/home/aa/Desktop/laoda/logerror.txt";
 	private static ClassPathXmlApplicationContext context;
 	// private static final String path = "/home/aa/Desktop/laoda/xuchang1.xls";
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -217,9 +217,13 @@ public class App {
 		String[] acount_taiyuan = { "4", "李健康", "工行太原三营盘支行", "6222 0805 0200 2890 632" };
 		String[] acount_xuchang = { "3", "李秀丽", "工行许昌分行", "6222 0817 0800 0231 484" };
 		String[] acount_zhengzhou2 = { "5", "杨海峰", "工行郑州农业路支行", "6212261702030020440" };
+		String[] acount_zhengzhou1 = { "3", "何江平", "工商银行郑州行政区支行营业室", "6212261702026260067" };
+		String[] acount_pingdingshan1 = { "17", "干鹏", "工行信阳分行", "6222 0817 1800 0841 604" };
 		repayAccount.put("太原一店", acount_taiyuan);
 		repayAccount.put("许昌一店", acount_xuchang);
 		repayAccount.put("郑州二店", acount_zhengzhou2);
+		repayAccount.put("郑州一店", acount_zhengzhou1);
+		repayAccount.put("平顶山一店", acount_pingdingshan1);
 	}
 
 	private static void packagestoreMap() {
@@ -1066,7 +1070,7 @@ public class App {
 		double doubleValue = 0.00;
 		if (!value.equals("")) {
 
-			System.out.println(customerContract.getContractNum() + " " + customerContract.getName());
+//			System.out.println(customerContract.getContractNum() + " " + customerContract.getName());
 			BigDecimal bigDecimal = new BigDecimal(value);
 			doubleValue = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}
