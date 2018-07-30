@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-06-22 14:06:07 by GeneratedTool mjy -->
+<hibernate-mapping>
+	<class name="com.jyd.bms.bean.CusContractRepaymentOtherFee" table="cus_contract_repayment_other_fee">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<many-to-one name="repayment" column="cus_contract_repayment_id"
+			class="com.jyd.bms.bean.ContractRepayment" />
+		<many-to-one name="costType" column="cost_type_id"
+			class="com.jyd.bms.bean.CostType" />
+		<property name="defaultValue" type="double">
+			<column name="default_value" />
+		</property>
+		<property name="value" type="double">
+			<column name="value" />
+		</property>
+		<property name="remark" type="java.lang.String">
+			<column name="remark" />
+		</property>
+		<property name="createDate" type="java.sql.Timestamp">
+			<column name="create_date" />
+		</property>
+		<property name="updateDate" type="java.sql.Timestamp">
+			<column name="update_date" />
+		</property>
+		<property name="createUser" type="java.lang.String">
+			<column name="create_user" />
+		</property>
+		<property name="updateUser" type="java.lang.String">
+			<column name="update_user" />
+		</property>
+	</class>
+</hibernate-mapping>

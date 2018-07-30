@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 14, 2017 11:59:15 AM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping package="com.jyd.bms.bean">
+	<class name="com.jyd.bms.bean.DepartmentMonthlyStatement" table="hr_department_monthly_statement">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity"/>
+		</id>
+		<many-to-one name="department" column="department_id"
+			class="Department" />
+		<many-to-one name="store" column="store_id"
+			class="Store" />	
+		<property name="yearMonth" type="java.lang.String">
+			<column name="year_and_month" />
+		</property>
+		
+		<property name="totalEmployee" type="int">
+			<column name="total_employee" />
+		</property>
+		<property name="totalStaff" type="int">
+			<column name="total_staff" />
+		</property>
+		<property name="totalJoin" type="int">
+			<column name="total_join" />
+		</property>
+		<property name="totalLeave" type="int">
+			<column name="total_leave" />
+		</property>
+		<property name="totalPromotion" type="int">
+			<column name="total_promotion" />
+		</property>
+		<property name="tuningIn" type="int">
+			<column name="total_tuning_in" />
+		</property>
+		<property name="tuningOut" type="int">
+			<column name="total_tuning_out" />
+		</property>
+		<property name="raiseASalary" type="int">
+			<column name="total_raise_a_salary" />
+		</property>
+		
+	</class>
+</hibernate-mapping>

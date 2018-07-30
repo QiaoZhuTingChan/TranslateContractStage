@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 21, 2018 1:02:19 PM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.jyd.bms.bean.WorkExperience" table="hr_work_experience">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="employee" class="com.jyd.bms.bean.Employee">
+        	<column name="employee_id"></column>
+        </many-to-one>
+     	<property name="company" type="java.lang.String">
+            <column name="company" />
+        </property>
+        <property name="job" type="java.lang.String">
+            <column name="job" />
+        </property>
+        <property name="contactUser" type="java.lang.String">
+            <column name="contact_user" />
+        </property>
+        <property name="telephone" type="java.lang.String">
+            <column name="telephone" />
+        </property>
+        <property name="beginDate" type="java.util.Date">
+            <column name="begin_date" />
+        </property>
+        <property name="endDate" type="java.util.Date">
+            <column name="end_date" />
+        </property>
+        <property name="createDate" type="java.sql.Timestamp">
+            <column name="create_date" />
+        </property>
+        <property name="updateDate" type="java.sql.Timestamp">
+            <column name="update_date" />
+        </property>
+        <property name="createUser" type="java.lang.String">
+            <column name="create_user" />
+        </property>
+        <property name="updateUser" type="java.lang.String">
+            <column name="update_user" />
+        </property>
+    </class>
+</hibernate-mapping>

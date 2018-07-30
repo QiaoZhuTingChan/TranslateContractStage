@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 14, 2017 2:24:49 PM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+	<class name="com.jyd.bms.bean.ContractFaceTrial" table="cus_contract_face_trial">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<many-to-one name="customerContract" class="com.jyd.bms.bean.CustomerContract"
+			fetch="join">
+			<column name="contract_id" />
+		</many-to-one>
+		<property name="companyBussiness" type="java.lang.String">
+			<column name="company_bussiness" />
+		</property>
+		<property name="monthSaleroom" type="double">
+			<column name="month_sale_room" />
+		</property>
+		<property name="machine" type="double">
+			<column name="machine" />
+		</property>
+		<property name="grossProfitRate" type="double">
+			<column name="gross_profit_rate" />
+		</property>
+		<property name="storeMaterial" type="double">
+			<column name="store_material" />
+		</property>
+		<property name="employeeWage" type="double">
+			<column name="employee_wage" />
+		</property>
+		<property name="totalEmployee" type="int">
+			<column name="total_employee" />
+		</property>
+		<property name="accountReceivable" type="double">
+			<column name="account_receivable" />
+		</property>
+		<property name="accountPayable" type="double">
+			<column name="account_payable" />
+		</property>
+		<property name="placeRental" type="double">
+			<column name="place_rental" />
+		</property>
+		<property name="placeArea" type="double">
+			<column name="place_area" />
+		</property>
+		<property name="otherCharge" type="double">
+			<column name="other_charge" />
+		</property>
+		<property name="profit" type="double">
+			<column name="profit" />
+		</property>
+		<property name="companyNature" type="java.lang.String">
+			<column name="company_nature" />
+		</property>
+		<property name="companyScale" type="java.lang.String">
+			<column name="company_scale" />
+		</property>
+		<property name="industry" type="java.lang.String">
+			<column name="industry" />
+		</property>
+		<property name="department" type="java.lang.String">
+			<column name="department" />
+		</property>
+		<property name="position" type="java.lang.String">
+			<column name="position" />
+		</property>
+		<property name="duty" type="java.lang.String">
+			<column name="duty" />
+		</property>
+		<property name="salary" type="double">
+			<column name="salary" />
+		</property>
+		<property name="otherEarning" type="double">
+			<column name="other_earning" />
+		</property>
+		<property name="joinDate" type="java.util.Date">
+			<column name="join_date" />
+		</property>
+		<property name="salaryDate" type="int">
+			<column name="salary_date" />
+		</property>
+		<property name="childRemark" type="java.lang.String">
+			<column name="child_remark" />
+		</property>
+		<property name="mateRemark" type="java.lang.String">
+			<column name="mate_remark" />
+		</property>
+		<property name="personalRemark" type="java.lang.String">
+			<column name="personal_remark" />
+		</property>
+		<property name="housePropertyOne" type="double">
+			<column name="house_property_one" />
+		</property>
+		<property name="houseAreaOne" type="double">
+			<column name="house_area_one" />
+		</property>
+		<property name="houseOneAmountInArear" type="double">
+			<column name="house_one_amount_in_arear" />
+		</property>
+		<property name="housePropertyTwo" type="double">
+			<column name="house_property_two" />
+		</property>
+		<property name="houseAreaTwo" type="double">
+			<column name="house_area_two" />
+		</property>
+		<property name="houseTwoAmountInArear" type="double">
+			<column name="house_two_amount_in_arear" />
+		</property>
+		<property name="carBrandOne" type="java.lang.String">
+			<column name="car_brand_one" />
+		</property>
+		<property name="carMarketPriceOne" type="double">
+			<column name="car_market_price_one" />
+		</property>
+		<property name="carOneAmountInArear" type="double">
+			<column name="car_one_amount_in_arear" />
+		</property>
+		<property name="carBrandTwo" type="java.lang.String">
+			<column name="car_brand_two" />
+		</property>
+		<property name="carMarketPriceTwo" type="double">
+			<column name="car_market_price_two" />
+		</property>
+		<property name="carTwoAmountInArear" type="double">
+			<column name="car_two_amount_in_arear" />
+		</property>
+		<property name="creditCardBankNameOne" type="java.lang.String">
+			<column name="credit_card_bank_name_one" />
+		</property>
+		<property name="limitOne" type="double">
+			<column name="limit_one" />
+		</property>
+		<property name="creditCardOneAmountInArear" type="double">
+			<column name="credit_card_one_amount_in_arear" />
+		</property>
+		<property name="creditCardBankNameTwo" type="java.lang.String">
+			<column name="credit_card_bank_name_two" />
+		</property>
+		<property name="limitTwo" type="double">
+			<column name="limit_two" />
+		</property>
+		<property name="creditCardTwoAmountInArear" type="double">
+			<column name="credit_card_two_amount_in_arear" />
+		</property>
+		<property name="totalLimit" type="double">
+			<column name="total_limit" />
+		</property>
+		<property name="totalAmountInArear" type="double">
+			<column name="total_amount_in_arear" />
+		</property>
+		<property name="remark" type="java.lang.String">
+			<column name="remark" />
+		</property>
+		<property name="homeVisitCheck" type="java.lang.String">
+			<column name="home_visit_check" />
+		</property>
+		<property name="createDate" type="java.sql.Timestamp">
+			<column name="create_date" />
+		</property>
+		<property name="updateDate" type="java.sql.Timestamp">
+			<column name="update_date" />
+		</property>
+		<property name="createUser" type="java.lang.String">
+			<column name="create_user" />
+		</property>
+		<property name="updateUser" type="java.lang.String">
+			<column name="update_user" />
+		</property>
+		<many-to-one name="propertyOne" class="com.jyd.bms.bean.PropertyType"
+			 fetch="join">
+			<column name="property_one" />
+		</many-to-one>
+		<many-to-one name="propertyTwo" class="com.jyd.bms.bean.PropertyType"
+			 fetch="join">
+			<column name="property_two" />
+		</many-to-one>
+		<property name="mortgageRepayDate" type="java.util.Date">
+			<column name="mortgage_repay_date" />
+		</property>
+		<property name="mortgageMaturityDate" type="java.util.Date">
+			<column name="mortgage_maturity_date" />
+		</property>
+	</class>
+</hibernate-mapping>

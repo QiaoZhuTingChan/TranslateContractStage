@@ -1,0 +1,17 @@
+﻿<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 14, 2017 11:59:15 AM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping package="com.jyd.bms.bean">
+	<class name="com.jyd.bms.bean.SonDepartment" table="hr_son_department">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<many-to-one name="department" column="department_id"
+			class="Department" />
+		<many-to-one name="sonDepartment" column="son_department_id"
+			class="Department" />
+		
+	</class>
+</hibernate-mapping>

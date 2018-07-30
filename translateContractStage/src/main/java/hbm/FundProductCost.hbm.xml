@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-05-25 14:19:55 by GeneratedTool mjy -->
+<hibernate-mapping>
+	<class name="com.jyd.bms.bean.FundProductCost" table="fund_product_cost">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		
+		<many-to-one name="costTypeId" column="cost_type_id"
+			class="com.jyd.bms.bean.CostType" />
+		<many-to-one name="fundProductId" column="fund_product_id"
+			class="com.jyd.bms.bean.FundProduct" />
+			
+		<property name="remark" type="java.lang.String">
+			<column name="remark" />
+		</property>
+		<property name="createDate" type="java.sql.Timestamp">
+			<column name="create_date" />
+		</property>
+		<property name="updateDate" type="java.sql.Timestamp">
+			<column name="update_date" />
+		</property>
+		<property name="createUser" type="java.lang.String">
+			<column name="create_user" />
+		</property>
+		<property name="updateUser" type="java.lang.String">
+			<column name="update_user" />
+		</property>
+		<property name="value" type="double">
+			<column name="value" />
+		</property>
+	</class>
+</hibernate-mapping>

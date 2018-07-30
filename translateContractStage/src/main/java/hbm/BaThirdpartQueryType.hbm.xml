@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-05-16 16:48:05 by GeneratedTool mjy -->
+<hibernate-mapping>
+	<class name="com.jyd.bms.bean.BaThirdpartQueryType" table="ba_thirdpart_query_type">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<many-to-one name="baThirdpartCompany" class="com.jyd.bms.bean.BaThirdpartCompany">
+			<column name="thirdpart_company_id" />
+		</many-to-one>
+		<property name="type" type="java.lang.String">
+			<column name="type" />
+		</property>
+		<property name="mark" type="java.lang.String">
+			<column name="mark" />
+		</property>
+		<property name="status" type="boolean">
+			<column name="status" />
+		</property>
+		<property name="price" type="double">
+			<column name="price" />
+		</property>
+		<property name="createDate" type="java.sql.Timestamp">
+			<column name="create_date" />
+		</property>
+		<property name="updateDate" type="java.sql.Timestamp">
+			<column name="update_date" />
+		</property>
+		<property name="createUser" type="java.lang.String">
+			<column name="create_user" />
+		</property>
+		<property name="updateUser" type="java.lang.String">
+			<column name="update_user" />
+		</property>
+	</class>
+</hibernate-mapping>

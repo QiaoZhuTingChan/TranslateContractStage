@@ -1,0 +1,34 @@
+﻿<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 14, 2017 11:59:15 AM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping package="com.jyd.bms.bean">
+	<class name="com.jyd.bms.bean.WorkflowOptionalProcessor" table="wf_work_flow_optional_processor">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<many-to-one name="workflow" column="wf_work_flow_id"
+			class="Workflow"  />
+		<many-to-one name="workflowStatus" column="wf_work_flow_status_id"
+			class="WorkflowStatus"  />
+		<many-to-one name="employee" column="employee_id" class="Employee"
+			 />
+		<property name="remark" type="java.lang.String">
+			<column name="remark" />
+		</property>
+		<property name="createDate" type="java.sql.Timestamp">
+			<column name="create_date" />
+		</property>
+		<property name="updateDate" type="java.sql.Timestamp">
+			<column name="update_date" />
+		</property>
+		<property name="createUser" type="java.lang.String">
+			<column name="create_user" />
+		</property>
+		<property name="updateUser" type="java.lang.String">
+			<column name="update_user" />
+		</property>
+
+	</class>
+</hibernate-mapping>

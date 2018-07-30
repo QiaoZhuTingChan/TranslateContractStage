@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="    
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd  
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd  
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd">
+	<!-- 导入springMvc.xml配置文件 <import resource="classpath:config/spring-mvc.xml" 
+		/> -->
+	<context:component-scan base-package="com.jyd.bms.bean" />
+	<context:component-scan base-package="com.jyd.bms.dao.impl" />
+	<context:component-scan base-package="com.jyd.bms.service" />	
+	<context:component-scan base-package="com.jyd.translateContractStage" />	
+		
+	<!-- 加载数据库配置 -->
+	<context:property-placeholder location="classpath:config/db_mysql.properties" />
+	<!-- 加载数据源 -->
+	<bean id="dataSource" class="com.jyd.bms.tool.hibernate.MyDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${driverClassName}" />
+		<property name="url" value="${url}" />
+		<property name="username" value="${username}" />
+		<property name="password" value="${password}" />
+		<property name="initialSize" value="${initialSize}" />
+		<property name="minIdle" value="${minIdle}" />
+		<property name="maxIdle" value="${maxIdle}" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mappingDirectoryLocations">
+			<list>
+				<value>classpath:hbm/</value>
+<!-- 				<value>classpath:form_hbm</value> -->
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 后台作业 
+	<task:scheduled-tasks>
+		<task:scheduled ref="CustomerContractService" method="autoTotalLateFee" cron="0 0 0 * * ?" />
+		<task:scheduled ref="DepartmentWeeklyStatementService" method="autoAddDepartmentWeeklyStatement" cron="0 0 0 ? * FRI" />
+		<task:scheduled ref="DepartmentMonthlyStatementService" method="autoAddDepartmentMonthlyStatement" cron="0 0 0 1 * ?" />
+	</task:scheduled-tasks>	-->
+	
+	<!-- 引入Spring的任务配置文件。 -->
+    <!--<import resource="spring-task.xml" />-->
+	
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="get*"  read-only="true" />
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="test*" propagation="REQUIRED" />
+			<tx:method name="*Transaction" propagation="REQUIRED" />
+			<tx:method name="*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut id="productServiceMethods"
+			expression="execution(* com.jyd.bms.service.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="productServiceMethods" />
+		
+	</aop:config>
+	<aop:config>
+		<aop:pointcut id="productServiceMethod"
+			expression="execution(* com.jyd.bms.service.form.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="productServiceMethod" />
+		
+	</aop:config>
+	
+	
+</beans>  

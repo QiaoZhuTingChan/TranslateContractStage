@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-05-23 15:42:22 by GeneratedTool mjy -->
+<hibernate-mapping>
+	<class name="com.jyd.bms.bean.CusBorrowerCreditInformationTable"
+		table="cus_borrower_credit_information_table">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<many-to-one name="user" class="com.jyd.bms.bean.User">
+			<column name="sys_user_id"></column>
+		</many-to-one>
+		<property name="name" type="java.lang.String">
+			<column name="name" />
+		</property>
+		<property name="idcard" type="java.lang.String">
+			<column name="idcard" />
+		</property>
+		<property name="phone" type="java.lang.String">
+			<column name="phone" />
+		</property>
+		<property name="address" type="java.lang.String">
+			<column name="address" />
+		</property>
+		<property name="email" type="java.lang.String">
+			<column name="email" />
+		</property>
+		<property name="informationTableContent" type="java.lang.String">
+			<column name="information_table_content" />
+		</property>
+		<property name="createDate" type="java.sql.Timestamp">
+			<column name="create_date" />
+		</property>
+		<property name="updateDate" type="java.sql.Timestamp">
+			<column name="update_date" />
+		</property>
+		<property name="createUser" type="java.lang.String">
+			<column name="create_user" />
+		</property>
+		<property name="updateUser" type="java.lang.String">
+			<column name="update_user" />
+		</property>
+	</class>
+</hibernate-mapping>

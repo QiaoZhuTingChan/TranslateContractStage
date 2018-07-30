@@ -1,0 +1,118 @@
+﻿<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 14, 2017 11:59:15 AM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping package="com.jyd.bms.bean">
+	<class name="com.jyd.bms.bean.VehicleInfo" table="cus_vehicle_info">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<property name="brand" type="java.lang.String">
+			<column name="brand" />
+		</property>
+		<property name="color" type="java.lang.String">
+			<column name="color" />
+		</property>
+		<property name="initialDateOfRegistration" type="java.util.Date">
+			<column name="initial_date_of_registration" />
+		</property>
+		<property name="plate" type="java.lang.String">
+			<column name="plate" />
+		</property>
+		<property name="purchasePrice" type="java.lang.Double">
+			<column name="purchase_price" />
+		</property>
+		<property name="valuationPrice" type="java.lang.Double">
+			<column name="car_valuation" />
+		</property>
+		<property name="milesOfTraveled" type="int">
+			<column name="miles_of_traveled" />
+		</property>
+		<property name="insuranceExpirationDate" type="java.util.Date">
+			<column name="insurance_expiration_date" />
+		</property>
+		<property name="annualRiskDueDate" type="java.util.Date">
+			<column name="annual_risk_due_date" />
+		</property>
+		<property name="engineNo" type="java.lang.String">
+			<column name="engine_no" />
+		</property>
+		<property name="vin" type="java.lang.String">
+			<column name="vin" />
+		</property>
+
+
+		<property name="releaseDate" type="java.util.Date">
+			<column name="release_date" />
+		</property>
+		<property name="gearbox" type="java.lang.String">
+			<column name="gearbox" />
+		</property>
+		<property name="displacement" type="java.lang.String">
+			<column name="displacement" />
+		</property>
+		<property name="emissions" type="java.lang.String">
+			<column name="emissions" />
+		</property>
+		<property name="vehicleLevel" type="java.lang.String">
+			<column name="vehicle_level" />
+		</property>
+		<property name="door" type="java.lang.String">
+			<column name="door" />
+		</property>
+		<property name="oil" type="java.lang.String">
+			<column name="oil" />
+		</property>
+		<property name="driveMode" type="java.lang.String">
+			<column name="drive_mode" />
+		</property>
+		<property name="timeToMarket" type="java.util.Date">
+			<column name="time_to_market" />
+		</property>
+		<property name="alloction" type="java.lang.String">
+			<column name="alloction" />
+		</property>
+		<property name="model" type="java.lang.String">
+			<column name="model" />
+		</property>
+		<property name="trimEvluate" type="java.lang.String">
+			<column name="trim_evluate" />
+		</property>
+		<property name="seat" type="java.lang.String">
+			<column name="seat" />
+		</property>
+		<property name="trim" type="java.lang.String">
+			<column name="trim" />
+		</property>
+		<property name="carBodyEvluate" type="java.lang.String">
+			<column name="car_body_evluate" />
+		</property>
+        <property name="mortgageRepaymentDate" type="java.util.Date">
+			<column name="mortgage_repayment_date" />
+		</property>
+        <property name="mortgageDueDate" type="java.util.Date">
+			<column name="mortgage_due_date" />
+		</property>
+		<many-to-one name="customer" column="cus_id" class="CustomerInfo"
+			 />
+		<many-to-one name="vehicleType" column="vehicle_type_id"
+			class="VehicleType"  />
+		<property name="remark" type="java.lang.String">
+			<column name="remark" />
+		</property>
+		<property name="createDate" type="java.sql.Timestamp">
+			<column name="create_date" />
+		</property>
+		<property name="updateDate" type="java.sql.Timestamp">
+			<column name="update_date" />
+		</property>
+		<property name="createUser" type="java.lang.String">
+			<column name="create_user" />
+		</property>
+		<property name="updateUser" type="java.lang.String">
+			<column name="update_user" />
+		</property>
+
+	</class>
+</hibernate-mapping>

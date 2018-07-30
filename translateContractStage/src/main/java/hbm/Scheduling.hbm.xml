@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 14, 2017 11:59:15 AM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping package="com.jyd.bms.bean">
+	<class name="com.jyd.bms.bean.Scheduling" table="att_scheduling">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<many-to-one name="employee" column="employee_id"
+			class="Employee"  />
+		<many-to-one name="shift" column="shift_id"
+			class="Shift"  />
+		<property name="shiftDate" type="java.util.Date">
+			<column name="shift_date" />
+		</property>
+		
+		
+	</class>
+</hibernate-mapping>

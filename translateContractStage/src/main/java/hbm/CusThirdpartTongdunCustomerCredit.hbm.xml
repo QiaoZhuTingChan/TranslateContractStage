@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-05-02 09:28:31 by GeneratedTool mjy -->
+<hibernate-mapping>
+	<class name="com.jyd.bms.bean.CusThirdpartTongdunCustomerCredit" table="cus_thirdpart_tongdun_customer_credit">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<property name="idCard" type="java.lang.String">
+			<column name="id_card" />
+		</property>
+		<property name="mobilephone" type="java.lang.String">
+			<column name="mobilephone" />
+		</property>
+		<property name="queryDate" type="java.sql.Timestamp">
+			<column name="query_date" />
+		</property>
+		<property name="htmlsrc" type="java.lang.String">
+			<column name="htmlsrc" />
+		</property>
+	</class>
+</hibernate-mapping>

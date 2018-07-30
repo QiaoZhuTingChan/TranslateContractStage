@@ -1,0 +1,36 @@
+﻿<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 14, 2017 11:59:15 AM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping package="com.jyd.bms.bean">
+	<class name="com.jyd.bms.bean.ProductCost" table="pro_cost">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<many-to-one name="costType" column="cost_type_id" class="CostType"
+			 />
+		<many-to-one name="product" column="product_id" class="Product"
+			 />
+		<many-to-one name="workflowTypeFlow" column="wf_work_flow_type_flow_id"
+			class="WorkflowTypeFlow"  />
+		<property name="remark" type="java.lang.String">
+			<column name="remark" />
+		</property>
+		<property name="createDate" type="java.sql.Timestamp">
+			<column name="create_date" />
+		</property>
+		<property name="updateDate" type="java.sql.Timestamp">
+			<column name="update_date" />
+		</property>
+		<property name="createUser" type="java.lang.String">
+			<column name="create_user" />
+		</property>
+		<property name="updateUser" type="java.lang.String">
+			<column name="update_user" />
+		</property>
+		<property name="value" type="double">
+			<column name="value" />
+		</property>
+	</class>
+</hibernate-mapping>

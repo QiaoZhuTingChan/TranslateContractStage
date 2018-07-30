@@ -1,0 +1,63 @@
+﻿<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 11, 2017 9:55:17 AM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+	<class name="com.jyd.bms.bean.WorkflowTypeFlow" table="wf_work_flow_type_flow">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<property name="workflowTypeName" type="java.lang.String">
+			<column name="work_flow_type_flow_name" />
+		</property>
+		<many-to-one name="workflowType"  class="com.jyd.bms.bean.WorkflowType"
+			fetch="join">
+			<column name="work_flow_type_id" />
+		</many-to-one>
+		<many-to-one name="form" class="com.jyd.bms.bean.Form"
+			 fetch="join">
+			<column name="form_id" />
+		</many-to-one>
+		<many-to-one name="flow" class="com.jyd.bms.bean.Flow"
+			 fetch="join">
+			<column name="flow_id" />
+		</many-to-one>
+		<property name="need" type="boolean">
+			<column name="need" />
+		</property>
+		<property name="decision" type="boolean">
+			<column name="decision" />
+		</property>
+		<property name="distinctStore" type="boolean">
+			<column name="distinct_store" />
+		</property>
+		<property name="entryDept" type="boolean">
+			<column name="entry_department" />
+		</property>
+		<property name="majorDept" type="boolean">
+			<column name="major_department" />
+		</property>
+		<property name="index" type="int">
+			<column name="sort_index" />
+		</property>
+		<property name="value" type="int">
+			<column name="value" />
+		</property>
+		<property name="remark" type="java.lang.String">
+			<column name="remark" />
+		</property>
+		<property name="createDate" type="java.sql.Timestamp">
+			<column name="create_date" />
+		</property>
+		<property name="updateDate" type="java.sql.Timestamp">
+			<column name="update_date" />
+		</property>
+		<property name="createUser" type="java.lang.String">
+			<column name="create_user" />
+		</property>
+		<property name="updateUser" type="java.lang.String">
+			<column name="update_user" />
+		</property>
+	</class>
+</hibernate-mapping>

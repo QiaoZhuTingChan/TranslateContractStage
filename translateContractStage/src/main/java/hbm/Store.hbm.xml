@@ -1,0 +1,65 @@
+﻿<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 14, 2017 11:59:15 AM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping package="com.jyd.bms.bean">
+	<class name="com.jyd.bms.bean.Store" table="ba_store">
+		<id name="id" type="java.lang.Integer">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<property name="shortName" type="java.lang.String">
+			<column name="short_name" />
+		</property>
+		<property name="number" type="java.lang.String">
+			<column name="num" />
+		</property>
+		<property name="registeredName" type="java.lang.String">
+			<column name="registered_name" />
+		</property>
+		<property name="address" type="java.lang.String">
+			<column name="address" />
+		</property>
+		<property name="principal" type="java.lang.String">
+			<column name="principal" />
+		</property>
+		<property name="province" type="java.lang.String">
+			<column name="province" />
+		</property>
+		<property name="city" type="java.lang.String">
+			<column name="city" />
+		</property>
+		<property name="remark" type="java.lang.String">
+			<column name="remark" />
+		</property>
+		<property name="createDate" type="java.sql.Timestamp">
+			<column name="create_date" />
+		</property>
+		<property name="updateDate" type="java.sql.Timestamp">
+			<column name="update_date" />
+		</property>
+		<property name="createUser" type="java.lang.String">
+			<column name="create_user" />
+		</property>
+		<property name="updateUser" type="java.lang.String">
+			<column name="update_user" />
+		</property>
+		<property name="emailAddress" type="java.lang.String">
+			<column name="email_address" />
+		</property>
+		<set name="lenders" cascade="all" inverse="true">
+			<key column="store_id" />
+			<one-to-many class="StoreLender"/>
+		</set>
+		
+		<set name="mortgagers" cascade="all" inverse="true">
+			<key column="store_id" />
+			<one-to-many class="StoreMortgager"/>
+		</set>
+		<set name="repayAccounts" cascade="all" inverse="true">
+			<key column="store_id" />
+			<one-to-many class="StoreRepaymentAccount"/>
+		</set>
+		
+	</class>
+</hibernate-mapping>

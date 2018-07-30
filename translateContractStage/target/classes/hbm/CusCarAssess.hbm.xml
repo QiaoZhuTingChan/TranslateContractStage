@@ -1,0 +1,105 @@
+﻿<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 14, 2017 11:59:15 AM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping package="com.jyd.bms.bean">
+	<class name="com.jyd.bms.bean.CusCarAssess" table="cus_car_assess">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<many-to-one name="customerContract" column="cus_contract_id"
+			class="CustomerContract"  />
+
+		<property name="louver" type="java.lang.Boolean">
+			<column name="louver" />
+		</property>
+
+		<property name="seat" type="java.lang.Boolean">
+			<column name="seat" />
+		</property>
+
+		<property name="launch" type="java.lang.Boolean">
+			<column name="launch" />
+		</property>
+
+		<property name="powertSeat" type="java.lang.Boolean">
+			<column name="powert_seat" />
+		</property>
+
+		<property name="powerBoot" type="java.lang.Boolean">
+			<column name="power_boot" />
+		</property>
+
+		<property name="seatHeating" type="java.lang.Boolean">
+			<column name="seat_heating" />
+		</property>
+
+		<property name="gps" type="java.lang.Boolean">
+			<column name="gps" />
+		</property>
+
+		<property name="electronicSuspension" type="java.lang.Boolean">
+			<column name="electronic_suspension" />
+		</property>
+
+		<property name="LookedUpAndPrompt" type="java.lang.Boolean">
+			<column name="Looked_up_and_prompt" />
+		</property>
+
+		<property name="seatNum" type="int">
+			<column name="seat_num" />
+		</property>
+
+
+		<property name="carAccessory" type="java.lang.String">
+			<column name="car_accessory" />
+		</property>
+
+		<property name="carVeer" type="java.lang.String">
+			<column name="car_veer" />
+		</property>
+		<property name="engine" type="java.lang.String">
+			<column name="engine" />
+		</property>
+		<property name="speedchangingbox" type="java.lang.String">
+			<column name="speedchangingbox" />
+		</property>
+		<property name="absorber" type="java.lang.String">
+			<column name="absorber" />
+		</property>
+		<property name="exhaustpipe" type="java.lang.String">
+			<column name="exhaustpipe" />
+		</property>
+		<property name="airConditioningEquipment" type="java.lang.String">
+			<column name="air_conditioning_equipment" />
+		</property>
+		<property name="checkTheResult" type="java.lang.String">
+			<column name="check_the_result" />
+		</property>
+
+		<property name="carCondition" type="java.lang.String">
+			<column name="car_condition" />
+		</property>
+
+		<property name="fault" type="java.lang.String">
+			<column name="fault" />
+		</property>
+		<property name="remark" type="java.lang.String">
+			<column name="remark" />
+		</property>
+
+		<property name="createDate" type="java.sql.Timestamp">
+			<column name="create_date" />
+		</property>
+		<property name="updateDate" type="java.sql.Timestamp">
+			<column name="update_date" />
+		</property>
+		<property name="createUser" type="java.lang.String">
+			<column name="create_user" />
+		</property>
+		<property name="updateUser" type="java.lang.String">
+			<column name="update_user" />
+		</property>
+	</class>
+</hibernate-mapping>

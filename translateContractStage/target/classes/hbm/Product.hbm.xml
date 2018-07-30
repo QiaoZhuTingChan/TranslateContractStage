@@ -1,0 +1,60 @@
+﻿<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 14, 2017 11:59:15 AM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping package="com.jyd.bms.bean">
+	<class name="com.jyd.bms.bean.Product" table="product">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<property name="name" type="java.lang.String">
+			<column name="name" />
+		</property>
+		<many-to-one name="productType" column="product_type_id"
+			class="ProductType"  />
+		<many-to-one name="repaymentType" column="repayment_type_id"
+			class="RepaymentType"  />
+		<many-to-one name="workflowType" column="wf_work_flow_type_id"
+			class="WorkflowType"  />
+		<many-to-one name="contractVersion" column="contract_version_id"
+			class="ContractVersion"  />
+		<property name="remark" type="java.lang.String">
+			<column name="remark" />
+		</property>
+		<property name="createDate" type="java.sql.Timestamp">
+			<column name="create_date" />
+		</property>
+		<property name="updateDate" type="java.sql.Timestamp">
+			<column name="update_date" />
+		</property>
+		<property name="createUser" type="java.lang.String">
+			<column name="create_user" />
+		</property>
+		<property name="updateUser" type="java.lang.String">
+			<column name="update_user" />
+		</property>
+		<set name="productCosts"  inverse="true" cascade="all">
+			<key column="product_id" />
+			<one-to-many class="ProductCost" />
+		</set>
+		<set name="productUploadfiles"  inverse="true"
+			cascade="all">
+			<key column="product_id" />
+			<one-to-many class="ProductUploadfile" />
+		</set>
+		<set name="productStores" inverse="true" cascade="all">
+			<key column="product_id" />
+			<one-to-many class="ProductStore" />
+		</set>
+		<set name="productParas" inverse="true" cascade="all">
+			<key column="product_id" />
+			<one-to-many class="ProductPara" />
+		</set>
+		<set name="productRepaymentStages" inverse="true"
+			cascade="all">
+			<key column="product_id" />
+			<one-to-many class="ProductRepaymentStage" />
+		</set>
+	</class>
+</hibernate-mapping>

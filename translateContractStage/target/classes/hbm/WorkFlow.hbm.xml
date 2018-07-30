@@ -1,0 +1,52 @@
+﻿<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 11, 2017 9:55:17 AM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping package="com.jyd.bms.bean">
+    <class name="com.jyd.bms.bean.Workflow" table="wf_work_flow">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="workflowType" column="work_flow_type_id"
+			class="WorkflowType" />
+        <property name="message" type="java.lang.String">
+            <column name="message" />
+        </property>
+        <property name="beginTime" type="java.sql.Timestamp">
+            <column name="begin_time" />
+        </property>
+        <property name="endTime" type="java.sql.Timestamp">
+            <column name="end_time" />
+        </property>
+        <property name="state" type="int">
+            <column name="state" />
+        </property>
+        <property name="remark" type="java.lang.String">
+            <column name="remark" />
+        </property>
+        <property name="createDate" type="java.sql.Timestamp">
+            <column name="create_date" />
+        </property>
+        <property name="updateDate" type="java.sql.Timestamp">
+            <column name="update_date" />
+        </property>
+        <property name="createUser" type="java.lang.String">
+            <column name="create_user" />
+        </property>
+        <property name="updateUser" type="java.lang.String">
+            <column name="update_user" />
+        </property>
+        <set cascade="save-update" inverse="true"  name="workflowStatuss"
+			sort="unsorted">
+			<key>
+				<column name="work_flow_id" />
+			</key>
+			<one-to-many class="com.jyd.bms.bean.WorkflowStatus" />
+		</set>
+		<set name="workflowOptionalProcessors"  inverse="true">
+			<key column="wf_work_flow_id" />
+			<one-to-many class="WorkflowOptionalProcessor" />
+		</set>
+    </class>
+</hibernate-mapping>

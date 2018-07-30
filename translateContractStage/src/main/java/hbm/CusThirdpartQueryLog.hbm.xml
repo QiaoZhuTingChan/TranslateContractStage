@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-04-20 13:41:29 by GeneratedTool mjy -->
+<hibernate-mapping>
+	<class name="com.jyd.bms.bean.CusThirdpartQueryLog" table="cus_thirdpart_query_log">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<many-to-one name="baThirdpartQueryType" class="com.jyd.bms.bean.BaThirdpartQueryType">
+			<column name="thirdpart_query_type_id"/>
+		</many-to-one>
+		<property name="startDate" type="java.sql.Timestamp">
+			<column name="start_date" />
+		</property>
+		<property name="endDate" type="java.sql.Timestamp">
+			<column name="end_date" />
+		</property>
+		<property name="sendContent" type="java.lang.String">
+			<column name="send_content" />
+		</property>
+		<property name="receiveContent" type="java.lang.String">
+			<column name="receive_content" />
+		</property>
+		<property name="state" type="java.lang.String">
+			<column name="state" />
+		</property>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,63 @@
+﻿<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 14, 2017 11:59:15 AM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping package="com.jyd.bms.bean">
+	<class name="com.jyd.bms.bean.Department" table="hr_department">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<property name="departmentName" type="java.lang.String">
+			<column name="department_name" />
+		</property>
+		<many-to-one name="deparmentSupervisor" column="department_supervisor"
+			class="Employee" />
+		<property name="actualNums" type="int">
+			<column name="actual_nums" />
+		</property>
+		<property name="totalActualNums" type="int">
+			<column name="total_actual_nums" />
+		</property>
+		<property name="staffNums" type="int">
+			<column name="staff_nums" />
+		</property>
+		<property name="totalStaffNums" type="int">
+			<column name="total_staff_nums" />
+		</property>
+		<many-to-one name="parentDepartment" column="parent_id"
+			class="Department" />
+		<many-to-one name="store" column="store_id"
+			class="Store" />
+		<property name="state" type="int">
+			<column name="state" />
+		</property>
+		<many-to-one name="departmentType" column="department_type_id"
+			class="DepartmentType" />
+		<property name="remark" type="java.lang.String">
+			<column name="remark" />
+		</property>
+		<property name="createDate" type="java.sql.Timestamp">
+			<column name="create_date" />
+		</property>
+		<property name="updateDate" type="java.sql.Timestamp">
+			<column name="update_date" />
+		</property>
+		<property name="createUser" type="java.lang.String">
+			<column name="create_user" />
+		</property>
+		<property name="updateUser" type="java.lang.String">
+			<column name="update_user" />
+		</property>
+		<set name="staffs" cascade="all" inverse="true">
+			<key column="department_id" />
+			<one-to-many class="Staff"/>
+		</set>
+		
+		<set name="employees" inverse="true">
+			<key column="department_id" />
+			<one-to-many class="Employee"/>
+		</set>
+		
+	</class>
+</hibernate-mapping>

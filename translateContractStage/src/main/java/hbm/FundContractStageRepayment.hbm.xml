@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-05-25 14:10:49 by GeneratedTool mjy -->
+<hibernate-mapping>
+	<class name="com.jyd.bms.bean.FundContractStageRepayment" table="fund_contract_stage_repayment">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		
+		<many-to-one name="fundContractStage" column="fund_contract_stage_id"
+			class="com.jyd.bms.bean.FundContractStage" />
+			
+		<property name="repaymentFee" type="double">
+			<column name="repayment_fee" />
+		</property>
+		<property name="repaymentDate" type="java.util.Date">
+			<column name="repayment_date" />
+		</property>
+		<property name="remark" type="java.lang.String">
+			<column name="remark" />
+		</property>
+		<property name="createDate" type="java.sql.Timestamp">
+			<column name="create_date" />
+		</property>
+		<property name="updateDate" type="java.sql.Timestamp">
+			<column name="update_date" />
+		</property>
+		<property name="createUser" type="java.lang.String">
+			<column name="create_user" />
+		</property>
+		<property name="updateUser" type="java.lang.String">
+			<column name="update_user" />
+		</property>
+		<property name="payment" type="java.lang.String">
+			<column name="payment" />
+		</property>
+		<property name="state" type="int">
+			<column name="state" />
+		</property>
+	</class>
+</hibernate-mapping>
