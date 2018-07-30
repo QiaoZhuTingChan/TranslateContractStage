@@ -39,7 +39,7 @@ import com.jyd.translateContractStage.hui.App;
  * 21); storeMap.put("东莞分中心", 22);
  * 
  * 
- * CusContractCost
+ * CusContractCost 提交吧
  * 
  * @author aa
  *
