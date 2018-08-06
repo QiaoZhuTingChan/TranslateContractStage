@@ -66,7 +66,7 @@ import com.jyd.translateContractStage.POIUtil;
 
 public class App {
 
-	private static final String logpath = "/home/aa/Desktop/laoda/logerror.txt";
+	private static final String logpath = "/home/aa/Desktop/laoda/zhengzhou2/logerror.txt";
 	private static ClassPathXmlApplicationContext context;
 	// private static final String path = "/home/aa/Desktop/laoda/xuchang1.xls";
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -125,7 +125,11 @@ public class App {
 	private static int[] repaymentTypeArr = new int[] { 6, 7 };// 6:等额本息， 7：先息后本
 
 	// 取费用id的数组
+	/**
+	 * 家访费,	手续费, GPS拆装费,	 GPS流量费,	停车费,	查档费,	抵押公证费,	违章押金,	保险押金
+	 */
 	private static int[] fee = new int[] { 1, 4, 13, 9, 3, 2, 8, 6, 7 };
+
 	private static List<Double> feeValue = new ArrayList<>();
 
 	private static Map<String, Integer> storeMap = new HashMap<>();
@@ -216,9 +220,9 @@ public class App {
 	private static void packagerepayAccount() {
 		String[] acount_taiyuan = { "4", "李健康", "工行太原三营盘支行", "6222 0805 0200 2890 632" };
 		String[] acount_xuchang = { "3", "李秀丽", "工行许昌分行", "6222 0817 0800 0231 484" };
-		String[] acount_zhengzhou2 = { "5", "杨海峰", "工行郑州农业路支行", "6212261702030020440" };
-		String[] acount_zhengzhou1 = { "3", "何江平", "工商银行郑州行政区支行营业室", "6212261702026260067" };
-		String[] acount_pingdingshan1 = { "17", "干鹏", "工行信阳分行", "6222 0817 1800 0841 604" };
+		String[] acount_zhengzhou2 = { "18", "杨海峰", "工行郑州农业路支行", "6212261702030020440" };
+		String[] acount_zhengzhou1 = { "9", "何江平", "工商银行郑州行政区支行营业室", "6212261702026260067" };
+		String[] acount_pingdingshan1 = { "6", "干鹏", "工行信阳分行", "6222 0817 1800 0841 604" };
 		repayAccount.put("太原一店", acount_taiyuan);
 		repayAccount.put("许昌一店", acount_xuchang);
 		repayAccount.put("郑州二店", acount_zhengzhou2);
@@ -314,7 +318,10 @@ public class App {
 					 */
 					String value = input.getValue(rowIndex, 0);
 					if (value == null || value.equals("")) {
-						continue;
+						if(input.getValue(rowIndex, 1)==null || input.getValue(rowIndex, 1).equals("")) {
+							
+							continue;
+						}
 					}
 
 					// 找到合同编号位置，代表一个合同的开始
@@ -333,7 +340,8 @@ public class App {
 						
 						/////////////////////////////////////////////////////////////////////////////////////////
 						if (stage != (countstage - 1)) {
-							throw new RuntimeException("借款期限跟分期期数不匹配: " + stage + "--" + (countstage - 1));
+							sb.append(sheetName + "\t"+ contractno + "借款期限跟分期期数不匹配: " + stage + "--" + (countstage - 1)).append("\n");
+//							throw new RuntimeException("借款期限跟分期期数不匹配: " + stage + "--" + (countstage - 1));
 						}
 						
 						
@@ -381,7 +389,14 @@ public class App {
 							sb.append(sheetName + "\t" + (phoneRow + 1) + "\t" + contractno + " 的身份证格式不对！！" + "\t"
 									+ input.getValue(phoneRow, 1)).append("\n");
 						}
-
+						if (roundHalfUp(input.getValue(phoneRow, 5))>3) {
+							sb.append(sheetName + "\t" + (phoneRow + 1) + "\t" + contractno + " 请检查一下前置数据！！" + "\t"
+									+ input.getValue(phoneRow, 5)).append("\n");
+						}
+						if (!(0<=roundHalfUp(input.getValue(phoneRow, 6))&& roundHalfUp(input.getValue(phoneRow, 6))<=5)) {
+							sb.append(sheetName + "\t" + (phoneRow + 1) + "\t" + contractno + " 请检查一下利率数据！！" + "\t"
+									+ input.getValue(phoneRow, 6)).append("\n");
+						}
 						if (!input.getValue(phoneRow, 10).matches(dateRegexp)) {
 							sb.append(sheetName + "\t" + (phoneRow + 1) + "\t" + contractno + " 的合同开始时间格式不对！！" + "\t"
 									+ input.getValue(phoneRow, 10)).append("\n");
@@ -434,6 +449,19 @@ public class App {
 										+ input.getValue(rowIndex, 2)).append("\n");
 							}
 						}
+						if(roundHalfUp(input.getValue(rowIndex, 5))<0) {
+							sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + " 月还本金小于0！！" + "\t"
+									+ input.getValue(rowIndex, 5)).append("\n");
+						}
+						if(roundHalfUp(input.getValue(rowIndex, 6))<0) {
+							sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + " 月还总金额小于0！！" + "\t"
+									+ input.getValue(rowIndex, 6)).append("\n");
+						}
+						if(roundHalfUp(input.getValue(rowIndex, 8))<0) {
+							sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + " 提前还款总额小于0！！" + "\t"
+									+ input.getValue(rowIndex, 8)).append("\n");
+						}
+						
 						/////////////////////////////////////////////////////////////////////
 
 						++countstage;
@@ -645,7 +673,7 @@ public class App {
 					lender.setId(lenderMap.get(customerContract.getStore().getId()));// 出借人
 					contractLender.setLender(lender);
 					contractLender.setContract(customerContract);
-					contractLender.setRemark("");
+					contractLender.setRemark("excel表数据导入");
 					contractLender.setCreateDate(timestamp);
 					contractLender.setUpdateDate(timestamp);
 					contractLender.setCreateUser("admin");
@@ -670,7 +698,8 @@ public class App {
 							if (ids > 0.0) {
 								contractPara.setValue(ids);
 								contractPara.setContract(customerContract);
-								contractPara.setRemark("");
+//								contractPara.setRemark("");
+								contractPara.setRemark("excel表数据导入");//后面加上的  20180731 14:22
 								contractParaList.add(contractPara);
 							}
 						}
@@ -819,6 +848,7 @@ public class App {
 									gpsOtherFee.setRepayment(contractRepayment);
 									gpsOtherFee.setCreateUser(contractRepayment.getCreateUser());
 									gpsOtherFee.setUpdateUser(contractRepayment.getUpdateUser());
+									gpsOtherFee.setValue(feeValue.get(i));
 									cusContractRepaymentOtherFeeList.add(gpsOtherFee);// 合同其他费用list
 								}
 							} else if (fee[i] == 9) {
@@ -831,6 +861,7 @@ public class App {
 									gpsOtherFee.setRepayment(contractRepayment);
 									gpsOtherFee.setCreateUser(contractRepayment.getCreateUser());
 									gpsOtherFee.setUpdateUser(contractRepayment.getUpdateUser());
+									gpsOtherFee.setValue(feeValue.get(i));
 									cusContractRepaymentOtherFeeList.add(gpsOtherFee);// 合同其他费用list
 								}
 							} else {
@@ -842,6 +873,7 @@ public class App {
 								gpsOtherFee.setRepayment(contractRepayment);
 								gpsOtherFee.setCreateUser(contractRepayment.getCreateUser());
 								gpsOtherFee.setUpdateUser(contractRepayment.getUpdateUser());
+								gpsOtherFee.setValue(feeValue.get(i));
 								cusContractRepaymentOtherFeeList.add(gpsOtherFee);// 合同其他费用list
 							}
 						}
