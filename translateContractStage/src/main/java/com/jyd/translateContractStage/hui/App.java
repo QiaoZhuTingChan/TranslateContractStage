@@ -66,7 +66,8 @@ import com.jyd.translateContractStage.POIUtil;
 
 public class App {
 
-	private static final String logpath = "/home/aa/Desktop/laoda/zhengzhou2/logerror.txt";
+	private static final int rowMaxNum = 5000;//行最大数
+	private static final String logpath = "/home/aa/Desktop/laoda/pingdingshan1/logerror.txt";
 	private static ClassPathXmlApplicationContext context;
 	// private static final String path = "/home/aa/Desktop/laoda/xuchang1.xls";
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -214,7 +215,11 @@ public class App {
 
 	private static void packagemortgager() {
 		String[] arr_guobiao = { "3", "91440300MA5DA69B6U", "深圳市前海深港合作区前湾一路1号A栋201室", "国标融资租赁（深圳）有限公司" };
+		String[] arr_houguan = { "7", "91440300MA4X04UU4M", "郑州市金水区金水路219号楼1单元15层", "上海厚冠信息咨询有限公司郑州分公司" };
+		String[] arr_lianrongshangwu = { "9", "91410105MA3XDKPE1J", "郑州市金水区花园路39号6号楼1803号", "郑州市联融商务信息咨询有限公司" };
 		mortgager.put("国标", arr_guobiao);
+		mortgager.put("厚冠", arr_houguan);
+		mortgager.put("联融商务", arr_lianrongshangwu);
 	}
 
 	private static void packagerepayAccount() {
@@ -306,8 +311,8 @@ public class App {
 				String contractno = "";// 合同编号
 
 				int countstage = 0;// 校验分期
-
-				for (; rowIndex < 5000; rowIndex++) {
+				int checkRepaymentstage = 0;//校验重复还款期数
+				for (; rowIndex < rowMaxNum; rowIndex++) {
 					Row row = input.getRow(rowIndex);
 					if (row == null) {
 						continue;
@@ -330,6 +335,8 @@ public class App {
 
 						nowPosition = "合同编号";
 						countstage = 0;
+						
+						checkRepaymentstage = 0;
 					} else if (value.trim().equals("合同分期")) {
 						nowPosition = "合同分期";
 						rowIndex += 2;
@@ -467,6 +474,13 @@ public class App {
 						++countstage;
 
 					} else if (!nowPosition.equals("") && nowPosition.equals("还款明细")) {
+						int repaymentstage = (int) Double.parseDouble(input.getValue(rowIndex, 0));
+						if(checkRepaymentstage != 0 && checkRepaymentstage == repaymentstage) {
+							continue;
+						}
+						checkRepaymentstage = repaymentstage;
+						
+						
 						System.out.print(sheetName + " " + contractno + " " + rowIndex + "\t" + nowPosition);
 
 						// 封装数据////////////////////////////////////////////////////////
@@ -590,7 +604,8 @@ public class App {
 
 			int countstage = 0;// 校验分期期数
 
-			for (; rowIndex < 5000; rowIndex++) {
+			int checkRepaymentstage = 0;//校验重复还款期数
+			for (; rowIndex < rowMaxNum; rowIndex++) {
 				Row row = input.getRow(rowIndex);
 				if (row == null) {
 					continue;
@@ -613,6 +628,8 @@ public class App {
 				if (value.trim().equals("合同编号")) {
 					nowPosition = "合同编号";
 					countstage = 0;
+					
+					checkRepaymentstage = 0;
 				} else if (value.trim().equals("合同分期")) {
 					nowPosition = "合同分期";
 					rowIndex += 2;
@@ -990,6 +1007,10 @@ public class App {
 					if (repaymentstage == 0) {
 						continue;
 					}
+					if(checkRepaymentstage != 0 && checkRepaymentstage == repaymentstage) {
+						continue;
+					}
+					checkRepaymentstage = repaymentstage;
 					String repaymentDate = input.getValue(rowIndex, 3);
 					if (repaymentDate.equals("")) {
 						continue;
@@ -1041,6 +1062,8 @@ public class App {
 						contractRepaymentList.add(contractRepayment);
 
 					}
+					
+					
 					/////////////////////////////////////////////////////////////////////
 				}
 
