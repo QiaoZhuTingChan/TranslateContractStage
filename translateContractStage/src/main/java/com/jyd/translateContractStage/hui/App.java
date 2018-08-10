@@ -66,8 +66,8 @@ import com.jyd.translateContractStage.POIUtil;
 
 public class App {
 
-	private static final int rowMaxNum = 5000;//行最大数
-	private static final String logpath = "/home/aa/Desktop/laoda/pingdingshan1/logerror.txt";
+	private static final int rowMaxNum = 15000;//行最大数
+	private static final String logpath = "/home/aa/Desktop/laoda/zhengzhou1/logerror.txt";
 	private static ClassPathXmlApplicationContext context;
 	// private static final String path = "/home/aa/Desktop/laoda/xuchang1.xls";
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -366,11 +366,13 @@ public class App {
 						System.out.print(sheetName + " " + contractnoRow + "\t" + nowPosition);
 
 						
-						
-						
 						for (int i = 0; i < 20; i++) {
 							contractno = input.getValue(contractnoRow, 0);
 							System.out.print("\t" + input.getValue(contractnoRow, i));
+						}
+						if(contractno.equals("")) {
+							sb.append(sheetName + "\t" + (contractnoRow + 1) + "\t" + contractno + " 合同编号为空！！" + "\t"
+									+ input.getValue(contractnoRow, 1)).append("\n");
 						}
 						System.out.println();
 						/**
@@ -639,6 +641,7 @@ public class App {
 
 					feeValue.clear();// 清空一个合同的feeValue
 					if (stage != (countstage - 1)) {
+						System.out.println(customerContract.getContractNum());
 						throw new RuntimeException("分期期数不匹配: " + stage + "--" + (countstage - 1));
 					}
 				}
@@ -656,6 +659,9 @@ public class App {
 					/**
 					 * contractnoRow
 					 */
+					if(input.getValue(contractnoRow, 0).equals("")){
+						throw new RuntimeException("合同编号为空！！");
+					}
 					customerContract.setContractNum(input.getValue(contractnoRow, 0));
 					customerContract.setName(input.getValue(contractnoRow, 2));
 					RepaymentType repaymentType = new RepaymentType();
@@ -829,6 +835,9 @@ public class App {
 					contractStage.setCapital(capital);
 
 					if (!input.getValue(rowIndex, 9).equals("")) {
+						if(input.getValue(rowIndex, 9).equals("43134.000000")) {
+							System.out.println(customerContract.getContractNum());
+						}
 						contractStage.setRepaymentDate(sdf.parse(input.getValue(rowIndex, 9)));
 					}
 					contractStage.setRemark("excel表数据导入");
