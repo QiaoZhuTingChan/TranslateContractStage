@@ -66,7 +66,7 @@ import com.jyd.translateContractStage.POIUtil;
 
 public class App {
 
-	private static final int rowMaxNum = 15000;//行最大数
+	private static final int rowMaxNum = 20000;//行最大数
 	private static final String logpath = "/home/aa/Desktop/laoda/zhengzhou1/logerror.txt";
 	private static ClassPathXmlApplicationContext context;
 	// private static final String path = "/home/aa/Desktop/laoda/xuchang1.xls";
@@ -428,6 +428,15 @@ public class App {
 							sb.append(sheetName + "\t" + (brandRow + 1) + "\t" + contractno + " 汽车购买价格格式不对！！" + "\t"
 									+ input.getValue(brandRow, 5)).append("\n");
 						}
+						
+						if (roundHalfUp(input.getValue(brandRow, 9))==0 && roundHalfUp(input.getValue(brandRow, 10))==0) {
+							sb.append(sheetName + "\t" + (brandRow + 1) + "\t" + contractno + " gps费跟停车费都为0，不对" + "\t").append("\n");
+						}
+						if (roundHalfUp(input.getValue(brandRow, 9))>0 && roundHalfUp(input.getValue(brandRow, 10))>0) {
+							sb.append(sheetName + "\t" + (brandRow + 1) + "\t" + contractno + " gps费跟停车费都大于0，不对" + "\t").append("\n");
+						}
+						
+						
 						if (input.getValue(brandRow, 10).matches("(\\d{4})-(\\d{1,2})-(\\d{1,2})")) {
 							sb.append(sheetName + "\t" + (brandRow + 1) + "\t" + contractno + " 的停车费为日期！！" + "\t"
 									+ input.getValue(brandRow, 10)).append("\n");
@@ -660,7 +669,7 @@ public class App {
 					 * contractnoRow
 					 */
 					if(input.getValue(contractnoRow, 0).equals("")){
-						throw new RuntimeException("合同编号为空！！");
+//						throw new RuntimeException("合同编号为空！！");
 					}
 					customerContract.setContractNum(input.getValue(contractnoRow, 0));
 					customerContract.setName(input.getValue(contractnoRow, 2));
@@ -835,9 +844,6 @@ public class App {
 					contractStage.setCapital(capital);
 
 					if (!input.getValue(rowIndex, 9).equals("")) {
-						if(input.getValue(rowIndex, 9).equals("43134.000000")) {
-							System.out.println(customerContract.getContractNum());
-						}
 						contractStage.setRepaymentDate(sdf.parse(input.getValue(rowIndex, 9)));
 					}
 					contractStage.setRemark("excel表数据导入");
@@ -1059,6 +1065,9 @@ public class App {
 						// contractStages.setState(1);
 						// }
 
+						if(repaymentDate.equals("0.000000")) {
+							throw new RuntimeException(customerContract.getContractNum());
+						}
 						contractRepayment.setRepaymentDate(sdf.parse(repaymentDate));
 						double overduePaymentss = roundHalfUp(input.getValue(rowIndex, 5));// 实收逾期费
 						contractRepayment.setRemark("excel表数据导入");
