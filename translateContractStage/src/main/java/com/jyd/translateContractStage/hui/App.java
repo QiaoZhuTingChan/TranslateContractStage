@@ -946,6 +946,10 @@ public class App {
 							contractGpsLateFee.setType(gpsCostType);
 							contractGpsLateFee.setCostValue(gpsFee);
 							contractStage.setExtraCharges(gpsFee);
+						} else if(parkingFee == 0 && gpsFee == 0) {//拆分合同中的第二份合同可能有这种情况，因为这两种费用之一在第一份合同中就收了
+							contractGpsLateFee.setType(null);
+							contractGpsLateFee.setParkingFee(null);
+							contractGpsLateFee.setCostValue(0);
 						}
 						contractGpsLateFee.setContract(customerContract);
 						contractGpsLateFee.setRemark("excel表数据导入");
