@@ -68,7 +68,7 @@ import com.jyd.translateContractStage.POIUtil;
 public class App {
 
 	private static final int rowMaxNum = 20000;// 行最大数
-	private static final String logpath = "/home/aa/Desktop/laoda/zhengzhou2/logerror.txt";
+	private static final String logpath = "/home/aa/Desktop/laoda/pingdingshan1/logerror.txt";
 	private static ClassPathXmlApplicationContext context;
 	// private static final String path = "/home/aa/Desktop/laoda/xuchang1.xls";
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -218,9 +218,17 @@ public class App {
 		String[] arr_guobiao = { "3", "91440300MA5DA69B6U", "深圳市前海深港合作区前湾一路1号A栋201室", "国标融资租赁（深圳）有限公司" };
 		String[] arr_houguan = { "7", "91440300MA4X04UU4M", "郑州市金水区金水路219号楼1单元15层", "上海厚冠信息咨询有限公司郑州分公司" };
 		String[] arr_lianrongshangwu = { "9", "91410105MA3XDKPE1J", "郑州市金水区花园路39号6号楼1803号", "郑州市联融商务信息咨询有限公司" };
+		String[] arr_lianrongtouzi = { "10", "91441900MA4UJY1H30", "东莞市东城区火炼树东莞大道11号台商大厦1单元办公702",
+				"广州市联融投资咨询有限公司东莞分公司" };
+		String[] arr_shanyin = { "10", "91441900MA4X04UU1M", "东莞市南城街道商业中心B座1209号", "闪银融资租赁（上海）有限公司东莞分公司" };
+		String[] arr_guansutouzi = { "10", "91441900MA4W3KW24U", "东莞市东城街道火炼树社区东莞大道11号台商大厦1单元办公1701", "东莞市莞速投资咨询有限公司" };
+
 		mortgager.put("国标", arr_guobiao);
 		mortgager.put("厚冠", arr_houguan);
 		mortgager.put("联融商务", arr_lianrongshangwu);
+		mortgager.put("联融投资", arr_lianrongtouzi);
+		mortgager.put("闪银", arr_shanyin);
+		mortgager.put("莞速投资", arr_guansutouzi);
 	}
 
 	private static void packagerepayAccount() {
@@ -229,11 +237,15 @@ public class App {
 		String[] acount_zhengzhou2 = { "18", "杨海峰", "工行郑州农业路支行", "6212261702030020440" };
 		String[] acount_zhengzhou1 = { "9", "何江平", "工商银行郑州行政区支行营业室", "6212261702026260067" };
 		String[] acount_pingdingshan1 = { "6", "干鹏", "工行信阳分行", "6222 0817 1800 0841 604" };
+		String[] acount_dongguan1 = { "10", "汤伟", "工行东莞怡丰支行", "6222 0820 1000 4772 814" };
+
 		repayAccount.put("太原一店", acount_taiyuan);
 		repayAccount.put("许昌一店", acount_xuchang);
 		repayAccount.put("郑州二店", acount_zhengzhou2);
 		repayAccount.put("郑州一店", acount_zhengzhou1);
 		repayAccount.put("平顶山一店", acount_pingdingshan1);
+		repayAccount.put("东莞一店", acount_dongguan1);
+
 	}
 
 	private static void packagestoreMap() {
@@ -375,6 +387,10 @@ public class App {
 						}
 						if (contractno.equals("")) {
 							sb.append(sheetName + "\t" + (contractnoRow + 1) + "\t" + contractno + " 合同编号为空！！" + "\t"
+									+ input.getValue(contractnoRow, 1)).append("\n");
+						}
+						if (!contractno.matches("[\\w[-]]+")) {
+							sb.append(sheetName + "\t" + (contractnoRow + 1) + "\t" + contractno + " 合同编号有误！！" + "\t"
 									+ input.getValue(contractnoRow, 1)).append("\n");
 						}
 						System.out.println();
@@ -683,13 +699,19 @@ public class App {
 					 * contractnoRow
 					 */
 					if (input.getValue(contractnoRow, 0).equals("")) {
-						// throw new RuntimeException("合同编号为空！！");
+						throw new RuntimeException("合同编号为空！！");
 					}
-					customerContract.setContractNum(input.getValue(contractnoRow, 0));
+					if (input.getValue(contractnoRow, 0).matches("\\w+\\.\\d+")) {
+						String contractNum = input.getValue(contractnoRow, 0).replaceAll("(\\w+)\\.\\d+", "$1");
+						customerContract.setContractNum(contractNum);
+					} else {
+						customerContract.setContractNum(input.getValue(contractnoRow, 0));
+					}
 					customerContract.setName(input.getValue(contractnoRow, 2));
 					RepaymentType repaymentType = new RepaymentType();
-					repaymentType.setId(input.getValue(contractnoRow, 3).contains("等额") == true ? repaymentTypeArr[0]
-							: repaymentTypeArr[1]);
+					repaymentType.setId(input.getValue(contractnoRow, 3).contains("等额") == true
+							|| input.getValue(contractnoRow, 3).equals("等本等息") == true ? repaymentTypeArr[0]
+									: repaymentTypeArr[1]);
 					customerContract.setRepaymentType(repaymentType);
 					customerContract.setProType(input.getValue(contractnoRow, 3));
 
@@ -742,6 +764,10 @@ public class App {
 								productParameters.setId(1);
 								contractPara.setPara(productParameters);
 								DecimalFormat dfss = new DecimalFormat(".####");
+								if (input.getValue(phoneRow, 5).equals("")) {
+									System.out.println(sheetName + "\t" + (phoneRow + 1) + "\t"
+											+ customerContract.getContractNum());
+								}
 								String str = dfss.format(Double.parseDouble(input.getValue(phoneRow, 5)));
 								double ids = Double.valueOf(str);
 								if (ids > 0.0) {
@@ -879,6 +905,7 @@ public class App {
 						contractRepayment.setInterest(contractStage.getInterest());
 						contractRepayment.setExtraCharges(contractStage.getExtraCharges());
 						contractRepayment.setStage(contractStage);
+						contractRepayment.setRepaymentDate(contractStage.getRepaymentDate());
 						contractRepayment.setCreateDate(timestamp);
 						contractRepayment.setUpdateDate(timestamp);
 						contractRepayment.setCreateUser("admin");
