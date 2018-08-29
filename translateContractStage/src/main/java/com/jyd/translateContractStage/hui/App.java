@@ -362,7 +362,7 @@ public class App {
 						/////////////////////////////////////////////////////////////////////////////////////////
 						if (stage != (countstage - 1)) {
 							sb.append(
-									sheetName + "\t" + contractno + "借款期限跟分期期数不匹配: " + stage + "--" + (countstage - 1))
+									sheetName + "\t" +(rowIndex+1)+"\t"+ contractno + "借款期限跟分期期数不匹配: " + stage + "--" + (countstage - 1))
 									.append("\n");
 							// throw new RuntimeException("借款期限跟分期期数不匹配: " + stage + "--" + (countstage -
 							// 1));
@@ -480,7 +480,13 @@ public class App {
 
 						rowIndex += 5;
 					} else if (!nowPosition.equals("") && nowPosition.equals("合同分期")) {
-
+						row = input.getRow(rowIndex);
+						if (row == null) {
+							continue;
+						}
+						if(input.getValue(rowIndex, 0).equals("")&&input.getValue(rowIndex, 1).equals("")&&input.getValue(rowIndex, 2).equals("")) {
+							continue;
+						}
 						// 封装数据////////////////////////////////////////////////////////
 						System.out.print(sheetName + " " + contractno + " " + rowIndex + "\t" + nowPosition);
 						for (int j = 0; j < 10; j++) {
@@ -516,6 +522,15 @@ public class App {
 						++countstage;
 
 					} else if (!nowPosition.equals("") && nowPosition.equals("还款明细")) {
+						row = input.getRow(rowIndex);
+						if (row == null) {
+							continue;
+						}
+						if(input.getValue(rowIndex, 0).equals("")&&input.getValue(rowIndex, 1).equals("")&&input.getValue(rowIndex, 2).equals("")) {
+							continue;
+						}
+						
+						
 						int repaymentstage = (int) Double.parseDouble(input.getValue(rowIndex, 0));
 						if (checkRepaymentstage != 0 && checkRepaymentstage == repaymentstage) {
 							continue;
@@ -868,7 +883,13 @@ public class App {
 
 					rowIndex += 5;
 				} else if (!nowPosition.equals("") && nowPosition.equals("合同分期")) {
-
+					row = input.getRow(rowIndex);
+					if (row == null) {
+						continue;
+					}
+					if(input.getValue(rowIndex, 0).equals("")&&input.getValue(rowIndex, 1).equals("")&&input.getValue(rowIndex, 2).equals("")) {
+						continue;
+					}
 					// 封装数据////////////////////////////////////////////////////////
 
 					contractStage = new ContractStage();
@@ -1066,7 +1087,14 @@ public class App {
 
 				} else if (!nowPosition.equals("") && nowPosition.equals("还款明细")) {
 					// 封装数据////////////////////////////////////////////////////////
-
+					row = input.getRow(rowIndex);
+					if (row == null) {
+						continue;
+					}
+					if(input.getValue(rowIndex, 0).equals("")&&input.getValue(rowIndex, 1).equals("")&&input.getValue(rowIndex, 2).equals("")) {
+						continue;
+					}
+					
 					int repaymentstage = (int) Double.parseDouble(input.getValue(rowIndex, 0));
 					if (repaymentstage == 0) {
 						continue;
