@@ -67,8 +67,8 @@ import com.jyd.translateContractStage.POIUtil;
 
 public class App {
 
-	private static final int rowMaxNum = 20000;// 行最大数
-	private static final String logpath = "/home/aa/Desktop/laoda/pingdingshan1/logerror.txt";
+	private static final int rowMaxNum = 10000;// 行最大数
+	private static final String logpath = "/home/aa/Desktop/laoda/zhengzhou1补/logerror.txt";
 	private static ClassPathXmlApplicationContext context;
 	// private static final String path = "/home/aa/Desktop/laoda/xuchang1.xls";
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -77,6 +77,8 @@ public class App {
 
 	private String dateRegexp = "[1-9]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])";
 	private String idCardRegexp = "^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$";
+
+	private static final List<String> checkContractNumList = new ArrayList<>();// 检查有无重复的合同编号
 
 	// bean
 	private static CustomerContract customerContract;
@@ -238,6 +240,7 @@ public class App {
 		String[] acount_zhengzhou1 = { "9", "何江平", "工商银行郑州行政区支行营业室", "6212261702026260067" };
 		String[] acount_pingdingshan1 = { "6", "干鹏", "工行信阳分行", "6222 0817 1800 0841 604" };
 		String[] acount_dongguan1 = { "10", "汤伟", "工行东莞怡丰支行", "6222 0820 1000 4772 814" };
+		String[] acount_xinxiang1 = { "13", "侯双锋", "工行新乡分行", "6222 0817 0400 1354 524" };
 
 		repayAccount.put("太原一店", acount_taiyuan);
 		repayAccount.put("许昌一店", acount_xuchang);
@@ -245,7 +248,7 @@ public class App {
 		repayAccount.put("郑州一店", acount_zhengzhou1);
 		repayAccount.put("平顶山一店", acount_pingdingshan1);
 		repayAccount.put("东莞一店", acount_dongguan1);
-
+		repayAccount.put("新乡一店", acount_xinxiang1);
 	}
 
 	private static void packagestoreMap() {
@@ -275,6 +278,7 @@ public class App {
 
 	public static boolean isExcelOk(String path) {
 		boolean flag = false;
+
 		try {
 			String contractFilePath = path;
 			POIUtil input = app.initContractPOIUtil(contractFilePath);
@@ -282,10 +286,36 @@ public class App {
 			flag = app.checkContractData(input);
 			input.close();
 
+			Map<String, Integer> countMap = new HashMap<>();
+			if (!checkContractNumList.isEmpty()) {
+				for (String value : checkContractNumList) {
+					if (countMap.get(value) != null) {
+						countMap.put(value, countMap.get(value) + 1);
+					} else {
+						countMap.put(value, 1);
+					}
+				}
+			}
+
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(logpath))));
 			bw.write("===================需要校验内容：==============");
 			bw.newLine();
 			bw.write(sb.toString());
+
+			bw.newLine();
+			bw.newLine();
+			bw.newLine();
+			bw.write("===================合同编号重复情况：==============");
+			bw.newLine();
+			if (!countMap.isEmpty()) {
+				for (String key : countMap.keySet()) {
+					if (countMap.get(key) >= 2) {
+						bw.write(key + " --- > " + countMap.get(key) + " 次");
+						bw.newLine();
+					}
+				}
+			}
+
 			bw.flush();
 			bw.close();
 
@@ -361,9 +391,8 @@ public class App {
 
 						/////////////////////////////////////////////////////////////////////////////////////////
 						if (stage != (countstage - 1)) {
-							sb.append(
-									sheetName + "\t" +(rowIndex+1)+"\t"+ contractno + "借款期限跟分期期数不匹配: " + stage + "--" + (countstage - 1))
-									.append("\n");
+							sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + "借款期限跟分期期数不匹配: " + stage
+									+ "--" + (countstage - 1)).append("\n");
 							// throw new RuntimeException("借款期限跟分期期数不匹配: " + stage + "--" + (countstage -
 							// 1));
 						}
@@ -380,7 +409,7 @@ public class App {
 						 */
 						// 封装数据////////////////////////////////////////////////////////
 						System.out.print(sheetName + " " + contractnoRow + "\t" + nowPosition);
-
+						checkContractNumList.add(input.getValue(contractnoRow, 0));
 						for (int i = 0; i < 20; i++) {
 							contractno = input.getValue(contractnoRow, 0);
 							System.out.print("\t" + input.getValue(contractnoRow, i));
@@ -399,7 +428,12 @@ public class App {
 						 */
 						for (int i = 0; i < 20; i++) {
 							// stage = Integer.parseInt(input.getValue(phoneRow, 7));
-							stage = (int) Double.parseDouble(input.getValue(phoneRow, 7));
+							try {
+								stage = (int) Double.parseDouble(input.getValue(phoneRow, 7));
+							} catch (NumberFormatException e) {
+								throw new RuntimeException("数字格式化异常：" + sheetName + "\t" + (phoneRow + 1) + "\t"
+										+ contractno + "\t" + input.getValue(phoneRow, 7));
+							}
 
 							// if(input.getValue(phoneRow, 15).equals("")) {
 							// System.out.println();
@@ -484,7 +518,8 @@ public class App {
 						if (row == null) {
 							continue;
 						}
-						if(input.getValue(rowIndex, 0).equals("")&&input.getValue(rowIndex, 1).equals("")&&input.getValue(rowIndex, 2).equals("")) {
+						if (input.getValue(rowIndex, 0).equals("") && input.getValue(rowIndex, 1).equals("")
+								&& input.getValue(rowIndex, 2).equals("")) {
 							continue;
 						}
 						// 封装数据////////////////////////////////////////////////////////
@@ -526,11 +561,11 @@ public class App {
 						if (row == null) {
 							continue;
 						}
-						if(input.getValue(rowIndex, 0).equals("")&&input.getValue(rowIndex, 1).equals("")&&input.getValue(rowIndex, 2).equals("")) {
+						if (input.getValue(rowIndex, 0).equals("") && input.getValue(rowIndex, 1).equals("")
+								&& input.getValue(rowIndex, 2).equals("")) {// 还款明细没有数据的情况
 							continue;
 						}
-						
-						
+
 						int repaymentstage = (int) Double.parseDouble(input.getValue(rowIndex, 0));
 						if (checkRepaymentstage != 0 && checkRepaymentstage == repaymentstage) {
 							continue;
@@ -544,6 +579,14 @@ public class App {
 								&& !input.getValue(rowIndex, 2).matches("\\d+.\\d+")) {
 							sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + " 实还款金额格式不对！！" + "\t"
 									+ input.getValue(rowIndex, 2)).append("\n");
+						}
+						// if (!input.getValue(rowIndex, 3).matches(dateRegexp)) {
+						// sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + "
+						// 还款日期格式不对！！" + "\t"
+						// + input.getValue(rowIndex, 3)).append("\n");
+						// }
+						if (contractno.equals("")) {
+							System.out.println();
 						}
 						for (int i = 0; i < 6; i++) {
 							System.out.print("\t" + input.getValue(rowIndex, i));
@@ -695,8 +738,8 @@ public class App {
 
 					feeValue.clear();// 清空一个合同的feeValue
 					if (stage != (countstage - 1)) {
-						System.out.println(customerContract.getContractNum());
-						throw new RuntimeException("分期期数不匹配: " + stage + "--" + (countstage - 1));
+						// System.out.println(customerContract.getContractNum());
+						// throw new RuntimeException("分期期数不匹配: " + stage + "--" + (countstage - 1));
 					}
 				}
 
@@ -887,7 +930,8 @@ public class App {
 					if (row == null) {
 						continue;
 					}
-					if(input.getValue(rowIndex, 0).equals("")&&input.getValue(rowIndex, 1).equals("")&&input.getValue(rowIndex, 2).equals("")) {
+					if (input.getValue(rowIndex, 0).equals("") && input.getValue(rowIndex, 1).equals("")
+							&& input.getValue(rowIndex, 2).equals("")) {
 						continue;
 					}
 					// 封装数据////////////////////////////////////////////////////////
@@ -1091,10 +1135,11 @@ public class App {
 					if (row == null) {
 						continue;
 					}
-					if(input.getValue(rowIndex, 0).equals("")&&input.getValue(rowIndex, 1).equals("")&&input.getValue(rowIndex, 2).equals("")) {
+					if (input.getValue(rowIndex, 0).equals("") && input.getValue(rowIndex, 1).equals("")
+							&& input.getValue(rowIndex, 2).equals("")) {
 						continue;
 					}
-					
+
 					int repaymentstage = (int) Double.parseDouble(input.getValue(rowIndex, 0));
 					if (repaymentstage == 0) {
 						continue;
@@ -1104,7 +1149,7 @@ public class App {
 					}
 					checkRepaymentstage = repaymentstage;
 					String repaymentDate = input.getValue(rowIndex, 3);
-					if (repaymentDate.equals("")) {
+					if (repaymentDate.equals("") || repaymentDate.equals("0.000000")) {
 						continue;
 					}
 
@@ -1142,8 +1187,9 @@ public class App {
 						// contractStages.setState(1);
 						// }
 
-						if (repaymentDate.equals("0.000000")) {
-							throw new RuntimeException(customerContract.getContractNum());
+						if (!repaymentDate.matches(dateRegexp)) {
+							throw new RuntimeException(sheetName + "\t" + (rowIndex + 1) + "\t"
+									+ customerContract.getContractNum() + "\t" + repaymentDate);
 						}
 						contractRepayment.setRepaymentDate(sdf.parse(repaymentDate));
 						double overduePaymentss = roundHalfUp(input.getValue(rowIndex, 5));// 实收逾期费
