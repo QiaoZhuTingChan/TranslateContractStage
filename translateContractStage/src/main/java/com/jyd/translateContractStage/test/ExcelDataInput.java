@@ -2,7 +2,6 @@ package com.jyd.translateContractStage.test;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
@@ -12,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -52,9 +52,17 @@ public class ExcelDataInput {
 //	private static final String path = "/home/aa/Desktop/laoda/zhengzhou2/zhengzhou2(2).xls";
 //	private static final String deleteSqlFilePath = "/home/aa/Desktop/laoda/zhengzhou2/sql/";
 	
-	private static final int storeId = 9;// 郑州1店
-	private static final String path = "/home/aa/Desktop/laoda/zhengzhou1/zhengzhou1(4).xls";
-	private static final String deleteSqlFilePath = "/home/aa/Desktop/laoda/zhengzhou1/sql/";
+//	private static final int storeId = 9;// 郑州一店
+//	private static final String path = "/home/aa/Desktop/laoda/zhengzhou1补/郑州一店旧系统导入（补录1).xls";
+//	private static final String deleteSqlFilePath = "/home/aa/Desktop/laoda/zhengzhou1补/sql/";
+	
+//	private static final int storeId = 13;// 新乡一店
+//	private static final String path = "/home/aa/Desktop/laoda/xinxiang1/新乡一店旧系统导入(1).xls";
+//	private static final String deleteSqlFilePath = "/home/aa/Desktop/laoda/xinxiang1/sql/";
+	
+	private static final int storeId = 10;// 东莞一店
+	private static final String path = "/home/aa/Desktop/laoda/dongguan1/东莞一店业务数据整理(2).xls";
+	private static final String deleteSqlFilePath = "/home/aa/Desktop/laoda/dongguan1/sql/";
 
 	private static final Map<Integer, String> storeMap = new HashMap<>();
 	// private static final String path = "/home/aa/Desktop/laoda/zhengzhou2.xls";
@@ -82,7 +90,6 @@ public class ExcelDataInput {
 		 context = new ClassPathXmlApplicationContext("config/spring.xml");
 	}
 
-	// @Before
 	public void init() {
 
 		deleteDataService = context.getBean(DeleteDataService.class);
@@ -163,15 +170,15 @@ public class ExcelDataInput {
 				eight = contractGpsLateFeeList.size();
 				nine = contractStageFeeList.size();
 
-				System.out.println(one);
-				System.out.println(two);
-				System.out.println(three);
-				System.out.println(four);
-				System.out.println(five);
-				System.out.println(six);
-				System.out.println(seven);
-				System.out.println(eight);
-				System.out.println(nine);
+				System.out.println("客户合同：" + one + "条");
+				System.out.println("出借人：" + two + "条");
+				System.out.println("合同参数：" + three + "条");
+				System.out.println("客户合同费用：" + four + "条");
+				System.out.println("合同分期：" + five + "条");
+				System.out.println("合同还款：" + six + "条");
+				System.out.println("合同还款其他费用：" + seven + "条");
+				System.out.println("合同gps逾期费：" + eight + "条");
+				System.out.println("合同分期费用：" + nine + "条");
 
 				System.out.println();
 				count = one + two + three + four + five + six + seven + eight + nine;
@@ -195,15 +202,15 @@ public class ExcelDataInput {
 				int excuteBatchInsertAll = excelBatchInsertDataService.excuteBatchInsertAll(map);
 				long end = System.currentTimeMillis();
 
-				one = customerContractList.size();
-				two = contractLenderList.size();
-				three = contractParaList.size();
-				four = cusContractCostList.size();
-				five = contractStageList.size();
-				six = contractRepaymentList.size();
-				seven = cusContractRepaymentOtherFeeList.size();
-				eight = contractGpsLateFeeList.size();
-				nine = contractStageFeeList.size();
+				//one = customerContractList.size();
+				//two = contractLenderList.size();
+				//three = contractParaList.size();
+				//four = cusContractCostList.size();
+				//five = contractStageList.size();
+				//six = contractRepaymentList.size();
+				//seven = cusContractRepaymentOtherFeeList.size();
+				//eight = contractGpsLateFeeList.size();
+				//nine = contractStageFeeList.size();
 
 				System.out.println("count1: " + count1);
 				System.out.println("count2: " + count2);
@@ -223,7 +230,7 @@ public class ExcelDataInput {
 				System.out.println("插入总费时：" + (end - start) + "ms");
 
 			}
-			
+//			
 			
 
 		} catch (Exception e) {
@@ -284,9 +291,9 @@ public class ExcelDataInput {
 			sb2.append(" ));");
 
 			BufferedWriter bw1 = new BufferedWriter(
-					new OutputStreamWriter(new FileOutputStream(new File(file, "delete1.sql"))));
-			BufferedWriter bw2 = new BufferedWriter(
 					new OutputStreamWriter(new FileOutputStream(new File(file, "delete2.sql"))));
+			BufferedWriter bw2 = new BufferedWriter(
+					new OutputStreamWriter(new FileOutputStream(new File(file, "delete1.sql"))));
 
 			bw1.write(sb1.toString());
 			bw2.write(sb2.toString());

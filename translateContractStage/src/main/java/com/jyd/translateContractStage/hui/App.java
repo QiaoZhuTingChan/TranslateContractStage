@@ -68,7 +68,9 @@ import com.jyd.translateContractStage.POIUtil;
 public class App {
 
 	private static final int rowMaxNum = 10000;// 行最大数
-	private static final String logpath = "/home/aa/Desktop/laoda/zhengzhou1补/logerror.txt";
+//	private static final String logpath = "/home/aa/Desktop/laoda/zhengzhou1补/logerror.txt";
+//	private static final String logpath = "/home/aa/Desktop/laoda/xinxiang1/logerror.txt";
+	private static final String logpath = "/home/aa/Desktop/laoda/dongguan1/logerror.txt";
 	private static ClassPathXmlApplicationContext context;
 	// private static final String path = "/home/aa/Desktop/laoda/xuchang1.xls";
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -354,6 +356,9 @@ public class App {
 				String contractNumber = "";
 				int stage = 0;
 				String contractno = "";// 合同编号
+				
+				double checkGpsFee = 0;//用于检查分期里，是否写上费用
+				double checkParkingFee = 0;//用于检查分期里，是否写上费用
 
 				int countstage = 0;// 校验分期
 				int checkRepaymentstage = 0;// 校验重复还款期数
@@ -480,6 +485,11 @@ public class App {
 						/**
 						 * brandRow
 						 */
+						
+						checkGpsFee = roundHalfUp(input.getValue(brandRow, 9));
+						checkParkingFee = roundHalfUp(input.getValue(brandRow, 10));
+						
+						
 						for (int i = 0; i < 20; i++) {
 							System.out.print("\t" + input.getValue(brandRow, i));
 						}
@@ -529,6 +539,24 @@ public class App {
 						}
 						System.out.println();
 
+						
+						if(roundHalfUp(input.getValue(rowIndex, 0)) == 0) {
+							
+							if(checkGpsFee != roundHalfUp(input.getValue(rowIndex, 1))) {
+								sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno
+										+ " 请检查此份合同分期中的gps费用是否填写！！" + "\t" + input.getValue(rowIndex, 1)).append("\n");
+							}
+							if(checkParkingFee != roundHalfUp(input.getValue(rowIndex, 2))) {
+								sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno
+										+ "请检查此份合同分期中的停车费是否填写" + "\t" + input.getValue(rowIndex, 2)).append("\n");
+							}
+							
+							
+						}
+						
+						
+						
+						
 						if (roundHalfUp(input.getValue(rowIndex, 0)) == stage) {
 							if (roundHalfUp(input.getValue(rowIndex, 1)) != 0) {
 								sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno
