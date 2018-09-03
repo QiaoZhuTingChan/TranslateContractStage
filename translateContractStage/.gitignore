@@ -5,7 +5,7 @@ target
 .project
 /bin/
 /classes/
-
+.gitignore
 
 # Compiled class file
 *.class
