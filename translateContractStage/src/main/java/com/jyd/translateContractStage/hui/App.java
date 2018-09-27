@@ -22,6 +22,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Row;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.jyd.bms.bean.BaProductClassify;
 import com.jyd.bms.bean.ContractGpsLateFee;
 import com.jyd.bms.bean.ContractLender;
 import com.jyd.bms.bean.ContractPara;
@@ -68,9 +69,11 @@ import com.jyd.translateContractStage.POIUtil;
 public class App {
 
 	private static final int rowMaxNum = 10000;// 行最大数
-//	private static final String logpath = "/home/aa/Desktop/laoda/zhengzhou1补/logerror.txt";
-//	private static final String logpath = "/home/aa/Desktop/laoda/xinxiang1/logerror.txt";
-	private static final String logpath = "/home/aa/Desktop/laoda/dongguan1/logerror.txt";
+	// private static final String logpath =
+	// "/home/aa/Desktop/laoda/zhengzhou1补/logerror.txt";
+	// private static final String logpath =
+	// "/home/aa/Desktop/laoda/xinxiang1/logerror.txt";
+	private static final String logpath = "/home/aa/Desktop/laoda/mengcheshijai/logerror.txt";
 	private static ClassPathXmlApplicationContext context;
 	// private static final String path = "/home/aa/Desktop/laoda/xuchang1.xls";
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -199,6 +202,7 @@ public class App {
 		lenderMap.put(6, 3);
 		lenderMap.put(21, 1);
 		lenderMap.put(22, 1);
+		lenderMap.put(23, 1);
 	}
 
 	private static void packagestageMap() {
@@ -216,6 +220,10 @@ public class App {
 		stageMap.put(4, 12);
 		stageMap.put(7, 13);
 		stageMap.put(8, 14);
+		stageMap.put(20, 15);
+		stageMap.put(22, 16);
+		stageMap.put(26, 17);
+		stageMap.put(30, 18);
 	}
 
 	private static void packagemortgager() {
@@ -243,6 +251,8 @@ public class App {
 		String[] acount_pingdingshan1 = { "6", "干鹏", "工行信阳分行", "6222 0817 1800 0841 604" };
 		String[] acount_dongguan1 = { "10", "汤伟", "工行东莞怡丰支行", "6222 0820 1000 4772 814" };
 		String[] acount_xinxiang1 = { "13", "侯双锋", "工行新乡分行", "6222 0817 0400 1354 524" };
+		String[] acount_mingche = { "23", "李秀峰", "工行广州创展支行", "6222 0836 0201 6972 967" };
+		String[] acount_likedai1 = { "7", "李明", "工行广州东城支行", "6222083602017540763" };
 
 		repayAccount.put("太原一店", acount_taiyuan);
 		repayAccount.put("许昌一店", acount_xuchang);
@@ -251,6 +261,8 @@ public class App {
 		repayAccount.put("平顶山一店", acount_pingdingshan1);
 		repayAccount.put("东莞一店", acount_dongguan1);
 		repayAccount.put("新乡一店", acount_xinxiang1);
+		repayAccount.put("名车世家", acount_mingche);
+		repayAccount.put("立刻贷一店", acount_likedai1);
 	}
 
 	private static void packagestoreMap() {
@@ -276,6 +288,8 @@ public class App {
 		storeMap.put("南宁一店", 20);
 		storeMap.put("广州分中心", 21);
 		storeMap.put("东莞分中心", 22);
+		storeMap.put("名车世家", 23);
+		storeMap.put("立刻贷广州一店", 7);
 	}
 
 	public static boolean isExcelOk(String path) {
@@ -356,9 +370,9 @@ public class App {
 				String contractNumber = "";
 				int stage = 0;
 				String contractno = "";// 合同编号
-				
-				double checkGpsFee = 0;//用于检查分期里，是否写上费用
-				double checkParkingFee = 0;//用于检查分期里，是否写上费用
+
+				double checkGpsFee = 0;// 用于检查分期里，是否写上费用
+				double checkParkingFee = 0;// 用于检查分期里，是否写上费用
 
 				int countstage = 0;// 校验分期
 				int checkRepaymentstage = 0;// 校验重复还款期数
@@ -419,6 +433,7 @@ public class App {
 							contractno = input.getValue(contractnoRow, 0);
 							System.out.print("\t" + input.getValue(contractnoRow, i));
 						}
+						
 						if (contractno.equals("")) {
 							sb.append(sheetName + "\t" + (contractnoRow + 1) + "\t" + contractno + " 合同编号为空！！" + "\t"
 									+ input.getValue(contractnoRow, 1)).append("\n");
@@ -426,6 +441,10 @@ public class App {
 						if (!contractno.matches("[\\w[-]]+")) {
 							sb.append(sheetName + "\t" + (contractnoRow + 1) + "\t" + contractno + " 合同编号有误！！" + "\t"
 									+ input.getValue(contractnoRow, 1)).append("\n");
+						}
+						if (input.getValue(contractnoRow, 3).equals("")) {
+							sb.append(sheetName + "\t" + (contractnoRow + 1) + "\t" + contractno + " 产品类型为空！！" + "\t"
+									+ input.getValue(contractnoRow, 2)).append("\n");
 						}
 						System.out.println();
 						/**
@@ -485,11 +504,10 @@ public class App {
 						/**
 						 * brandRow
 						 */
-						
+
 						checkGpsFee = roundHalfUp(input.getValue(brandRow, 9));
 						checkParkingFee = roundHalfUp(input.getValue(brandRow, 10));
-						
-						
+
 						for (int i = 0; i < 20; i++) {
 							System.out.print("\t" + input.getValue(brandRow, i));
 						}
@@ -539,24 +557,19 @@ public class App {
 						}
 						System.out.println();
 
-						
-						if(roundHalfUp(input.getValue(rowIndex, 0)) == 0) {
-							
-							if(checkGpsFee != roundHalfUp(input.getValue(rowIndex, 1))) {
+						if (roundHalfUp(input.getValue(rowIndex, 0)) == 0) {
+
+							if (checkGpsFee != roundHalfUp(input.getValue(rowIndex, 1))) {
 								sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno
 										+ " 请检查此份合同分期中的gps费用是否填写！！" + "\t" + input.getValue(rowIndex, 1)).append("\n");
 							}
-							if(checkParkingFee != roundHalfUp(input.getValue(rowIndex, 2))) {
-								sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno
-										+ "请检查此份合同分期中的停车费是否填写" + "\t" + input.getValue(rowIndex, 2)).append("\n");
+							if (checkParkingFee != roundHalfUp(input.getValue(rowIndex, 2))) {
+								sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + "请检查此份合同分期中的停车费是否填写"
+										+ "\t" + input.getValue(rowIndex, 2)).append("\n");
 							}
-							
-							
+
 						}
-						
-						
-						
-						
+
 						if (roundHalfUp(input.getValue(rowIndex, 0)) == stage) {
 							if (roundHalfUp(input.getValue(rowIndex, 1)) != 0) {
 								sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno
@@ -567,17 +580,42 @@ public class App {
 										+ " 此合同编号的分期最后一期停车费费不为0！！" + "\t" + input.getValue(rowIndex, 2)).append("\n");
 							}
 						}
-						if (roundHalfUp(input.getValue(rowIndex, 5)) < 0) {
-							sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + " 月还本金小于0！！" + "\t"
-									+ input.getValue(rowIndex, 5)).append("\n");
+						if (input.getValue(rowIndex, 5).contains("/")) {
+							String stri = input.getValue(rowIndex, 5).replace("/", ".");
+							if (roundHalfUp(stri) < 0) {
+								sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + " 月还本金小于0！！" + "\t"
+										+ input.getValue(rowIndex, 5)).append("\n");
+							}
+						} else {
+							if (roundHalfUp(input.getValue(rowIndex, 5)) < 0) {
+								sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + " 月还本金小于0！！" + "\t"
+										+ input.getValue(rowIndex, 5)).append("\n");
+							}
 						}
-						if (roundHalfUp(input.getValue(rowIndex, 6)) < 0) {
-							sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + " 月还总金额小于0！！" + "\t"
-									+ input.getValue(rowIndex, 6)).append("\n");
+
+						if (input.getValue(rowIndex, 6).contains("/")) {
+							String str = input.getValue(rowIndex, 6).replace("/", ".");
+							if (roundHalfUp(str) < 0) {
+								sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + " 月还总金额小于0！！" + "\t"
+										+ input.getValue(rowIndex, 6)).append("\n");
+							}
+						} else {
+							if (roundHalfUp(input.getValue(rowIndex, 6)) < 0) {
+								sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + " 月还总金额小于0！！" + "\t"
+										+ input.getValue(rowIndex, 6)).append("\n");
+							}
 						}
-						if (roundHalfUp(input.getValue(rowIndex, 8)) < 0) {
-							sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + " 提前还款总额小于0！！" + "\t"
-									+ input.getValue(rowIndex, 8)).append("\n");
+						if (input.getValue(rowIndex, 8).contains("/")) {
+							String str = input.getValue(rowIndex, 8).replace("/", ".");
+							if (roundHalfUp(str) < 0) {
+								sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + " 提前还款总额小于0！！" + "\t"
+										+ input.getValue(rowIndex, 8)).append("\n");
+							}
+						} else {
+							if (roundHalfUp(input.getValue(rowIndex, 8)) < 0) {
+								sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + " 提前还款总额小于0！！" + "\t"
+										+ input.getValue(rowIndex, 8)).append("\n");
+							}
 						}
 
 						/////////////////////////////////////////////////////////////////////
@@ -608,11 +646,12 @@ public class App {
 							sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + " 实还款金额格式不对！！" + "\t"
 									+ input.getValue(rowIndex, 2)).append("\n");
 						}
-						// if (!input.getValue(rowIndex, 3).matches(dateRegexp)) {
-						// sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + "
-						// 还款日期格式不对！！" + "\t"
-						// + input.getValue(rowIndex, 3)).append("\n");
-						// }
+						if(roundHalfUp(input.getValue(rowIndex, 0)) != 0 && !input.getValue(rowIndex, 3).equals("")) {
+							if (!input.getValue(rowIndex, 3).matches(dateRegexp)) {
+								sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + "还款日期格式不对！！" + "\t"
+										+ input.getValue(rowIndex, 3)).append("\n");
+							}
+						}
 						if (contractno.equals("")) {
 							System.out.println();
 						}
@@ -886,6 +925,11 @@ public class App {
 					customerContract.setPrincipal(roundHalfUp(input.getValue(phoneRow, 9)));
 					customerContract.setStartDate(sdf.parse(input.getValue(phoneRow, 10)));
 					customerContract.setEndDate(sdf.parse(input.getValue(phoneRow, 11)));
+					customerContract.setRealLoanDate(customerContract.getStartDate());
+					customerContract.setRealLoanEndDate(customerContract.getEndDate());
+					BaProductClassify baProductClassify = new BaProductClassify();
+					baProductClassify.setId(1);//车贷
+					customerContract.setBaProductClassify(baProductClassify );
 
 					// HSSFCell interest = contractNumRows.getCell(12);
 					// HSSFCell capital = contractNumRows.getCell(13);
@@ -976,7 +1020,14 @@ public class App {
 					contractStage.setContract(customerContract);
 					double interest = roundHalfUp(input.getValue(rowIndex, 4));
 					contractStage.setInterest(interest + serviceFee);
-					double capital = roundHalfUp(input.getValue(rowIndex, 5));
+					
+					double capital = 0.0;
+					if (input.getValue(rowIndex, 5).contains("/")) {
+						String stri = input.getValue(rowIndex, 5).replace("/", ".");
+						capital = roundHalfUp(stri);
+					} else {
+						capital = roundHalfUp(input.getValue(rowIndex, 5));
+					}
 					contractStage.setCapital(capital);
 
 					if (!input.getValue(rowIndex, 9).equals("")) {

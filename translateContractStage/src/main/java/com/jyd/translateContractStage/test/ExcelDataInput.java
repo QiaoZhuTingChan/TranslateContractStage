@@ -36,7 +36,8 @@ import com.jyd.translateContractStage.hui.App;
  * storeMap.put("新乡一店", 13); storeMap.put("信阳一店", 14); storeMap.put("洛阳一店", 15);
  * storeMap.put("立刻贷二店", 16); storeMap.put("总部", 17); storeMap.put("郑州二店", 18);
  * storeMap.put("河南分中心", 19); storeMap.put("南宁一店", 20); storeMap.put("广州分中心",
- * 21); storeMap.put("东莞分中心", 22);
+ * 21); storeMap.put("东莞分中心", 22);storeMap.put("名车世家", 23);
+		storeMap.put("立刻贷广州一店", 7);
  * 
  * 
  * CusContractCost 提交吧
@@ -60,9 +61,13 @@ public class ExcelDataInput {
 //	private static final String path = "/home/aa/Desktop/laoda/xinxiang1/新乡一店旧系统导入(1).xls";
 //	private static final String deleteSqlFilePath = "/home/aa/Desktop/laoda/xinxiang1/sql/";
 	
-	private static final int storeId = 10;// 东莞一店
-	private static final String path = "/home/aa/Desktop/laoda/dongguan1/东莞一店业务数据整理(2).xls";
-	private static final String deleteSqlFilePath = "/home/aa/Desktop/laoda/dongguan1/sql/";
+//	private static final int storeId = 10;// 东莞一店
+//	private static final String path = "/home/aa/Desktop/laoda/dongguan1/东莞一店业务数据整理(2).xls";
+//	private static final String deleteSqlFilePath = "/home/aa/Desktop/laoda/dongguan1/sql/";
+	
+	private static final int storeId = 23;// 名车世家
+	private static final String path = "/home/aa/Desktop/laoda/mengcheshijai/mingche20180910(２).xls";
+	private static final String deleteSqlFilePath = "/home/aa/Desktop/laoda/mengcheshijai/sql/";
 
 	private static final Map<Integer, String> storeMap = new HashMap<>();
 	// private static final String path = "/home/aa/Desktop/laoda/zhengzhou2.xls";
@@ -87,7 +92,7 @@ public class ExcelDataInput {
 	private static Set<ContractStageFee> contractStageFeeList = new HashSet<>();// 合同分期费
 
 	static {
-//		 context = new ClassPathXmlApplicationContext("config/spring.xml");
+		 context = new ClassPathXmlApplicationContext("config/spring.xml");
 	}
 
 	public void init() {
@@ -120,13 +125,15 @@ public class ExcelDataInput {
 		storeMap.put(20, "南宁一店");
 		storeMap.put(21, "广州分中心");
 		storeMap.put(22, "东莞分中心");
+		storeMap.put(23, "名车世家");
+		storeMap.put(7, "立刻贷广州一店");
 
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void inputData() {
-//		 init();
+		 init();
 		packageStoreMap();
 		try {
 
@@ -192,44 +199,44 @@ public class ExcelDataInput {
 				contractNumList.add(customerContract.getContractNum());
 			}
 
-//			printDeleteSql(contractNumList);
-//			deleteData(contractNumList);
+			printDeleteSql(contractNumList);
+			deleteData(contractNumList);
 			
 			// 批量插入数据集合
-//			if (map.size() > 0) {
-//
-//				long start = System.currentTimeMillis();
-//				int excuteBatchInsertAll = excelBatchInsertDataService.excuteBatchInsertAll(map);
-//				long end = System.currentTimeMillis();
-//
-//				//one = customerContractList.size();
-//				//two = contractLenderList.size();
-//				//three = contractParaList.size();
-//				//four = cusContractCostList.size();
-//				//five = contractStageList.size();
-//				//six = contractRepaymentList.size();
-//				//seven = cusContractRepaymentOtherFeeList.size();
-//				//eight = contractGpsLateFeeList.size();
-//				//nine = contractStageFeeList.size();
-//
-//				System.out.println("count1: " + count1);
-//				System.out.println("count2: " + count2);
-//				System.out.println("count3: " + count3);
-//				System.out.println("共删除数据：" + deletecount);
-//				System.out.println("客户合同：" + one + "条");
-//				System.out.println("出借人：" + two + "条");
-//				System.out.println("合同参数：" + three + "条");
-//				System.out.println("客户合同费用：" + four + "条");
-//				System.out.println("合同分期：" + five + "条");
-//				System.out.println("合同还款：" + six + "条");
-//				System.out.println("合同还款其他费用：" + seven + "条");
-//				System.out.println("合同gps逾期费：" + eight + "条");
-//				System.out.println("合同分期费用：" + nine + "条");
-//				System.out.println("查询总：" + count);
-//				System.out.println("插入总：" + excuteBatchInsertAll);
-//				System.out.println("插入总费时：" + (end - start) + "ms");
-//
-//			}
+			if (map.size() > 0) {
+
+				long start = System.currentTimeMillis();
+				int excuteBatchInsertAll = excelBatchInsertDataService.excuteBatchInsertAll(map);
+				long end = System.currentTimeMillis();
+
+				//one = customerContractList.size();
+				//two = contractLenderList.size();
+				//three = contractParaList.size();
+				//four = cusContractCostList.size();
+				//five = contractStageList.size();
+				//six = contractRepaymentList.size();
+				//seven = cusContractRepaymentOtherFeeList.size();
+				//eight = contractGpsLateFeeList.size();
+				//nine = contractStageFeeList.size();
+
+				System.out.println("count1: " + count1);
+				System.out.println("count2: " + count2);
+				System.out.println("count3: " + count3);
+				System.out.println("共删除数据：" + deletecount);
+				System.out.println("客户合同：" + one + "条");
+				System.out.println("出借人：" + two + "条");
+				System.out.println("合同参数：" + three + "条");
+				System.out.println("客户合同费用：" + four + "条");
+				System.out.println("合同分期：" + five + "条");
+				System.out.println("合同还款：" + six + "条");
+				System.out.println("合同还款其他费用：" + seven + "条");
+				System.out.println("合同gps逾期费：" + eight + "条");
+				System.out.println("合同分期费用：" + nine + "条");
+				System.out.println("查询总：" + count);
+				System.out.println("插入总：" + excuteBatchInsertAll);
+				System.out.println("插入总费时：" + (end - start) + "ms");
+
+			}
 //			
 			
 

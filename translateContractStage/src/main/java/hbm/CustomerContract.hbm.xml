@@ -33,19 +33,24 @@
 			class="BusinessSource" />
 		<many-to-one name="assetsType" column="assets_type_id"
 			class="AssetsType" />
-		<many-to-one name="product" column="product_id"
-			class="Product" />
-		
+		<many-to-one name="product" column="product_id" class="Product" />
 		<many-to-one name="stageVersion" column="ba_calc_stage_version_id"
-			class="BaCalcStageVersion"  />
-		
+			class="BaCalcStageVersion" />
+		<!-- 产品分类 -->
+		<many-to-one name="baProductClassify" column="ba_product_classify_id"
+			class="BaProductClassify" />
+		<many-to-one name="baSettlementType" column="ba_settlement_type_id"
+			class="BaSettlementType" />
 		<many-to-one name="repaymentType" column="ba_repayment_type_id"
-			class="RepaymentType"  />
+			class="RepaymentType" />
 		<many-to-one name="productType" column="ba_product_type_id"
-			class="ProductType"  />
-		<property name="ProType" type="java.lang.String">
+			class="ProductType" />
+		<property name="proType" type="java.lang.String">
 			<column name="product_type" />
-		</property>	
+		</property>
+		<property name="feeStage" type="int">
+			<column name="fee_stage" />
+		</property>
 		<property name="purpose" type="java.lang.String">
 			<column name="borrowing_purpose" />
 		</property>
@@ -63,20 +68,21 @@
 		</property>
 		<many-to-one name="stage" column="repayment_stage_id"
 			class="RepaymentStage" />
-			
+
 		<many-to-one name="version" column="contract_version_id"
 			class="ContractVersion" />
-			
-			
-		<many-to-one name="founder" column="employee_id"
-			class="Employee" />
-			
+
+
+		<many-to-one name="founder" column="employee_id" class="Employee" />
+
 		<many-to-one name="responsiblePerson" column="person_responsible_id"
 			class="Employee" />
+			
+		<many-to-one name="followEmployee"  column= " follow_employee_id"  class="com.jyd.bms.bean.Employee" />
 		<property name="returnPointNum" type="double">
 			<column name="return_point_num" />
-		</property>	
-			
+		</property>
+
 		<property name="plate" type="java.lang.String">
 			<column name="plate" />
 		</property>
@@ -88,25 +94,25 @@
 		</property>
 		<property name="state" type="int">
 			<column name="state" />
-		</property>	
+		</property>
 		<property name="renewal" type="int">
-            <column name="renewal" />
+			<column name="renewal" />
 		</property>
 		<property name="realLoanDate" type="java.util.Date">
-            <column name="real_loan_date" />
+			<column name="real_loan_date" />
 		</property>
 		<property name="realLoanEndDate" type="java.util.Date">
-            <column name="real_loan_end_date" />
+			<column name="real_loan_end_date" />
 		</property>
-		
+
 		<property name="startDate" type="java.util.Date">
-            <column name="start_date" />
+			<column name="start_date" />
 		</property>
 		<property name="endDate" type="java.util.Date">
-            <column name="end_date" />
+			<column name="end_date" />
 		</property>
 		<property name="settlementDate" type="java.util.Date">
-            <column name="settlement_date" />
+			<column name="settlement_date" />
 		</property>
 		<property name="vehicleModel" type="java.lang.String">
 			<column name="vehicle_model" />
@@ -114,10 +120,10 @@
 		<many-to-one name="customerInfo" column="cus_personal_info_id"
 			class="CustomerInfo" />
 		<many-to-one name="repaymentAccount" column="repayment_account_id"
-			class="RepaymentAccount" />		
+			class="RepaymentAccount" />
 		<property name="mortgagor" type="java.lang.String">
 			<column name="mortgagor" />
-		</property>	
+		</property>
 		<property name="repayAccount" type="java.lang.String">
 			<column name="repayment_account" />
 		</property>
@@ -152,116 +158,115 @@
 			<column name="update_user" />
 		</property>
 		<many-to-one name="vehicleInfo" column="vehiclerinfo_id"
-			class="VehicleInfo" />	
-		<many-to-one name="mortgager" column="mortgager_id"
-			class="Mortgager" />	
+			class="VehicleInfo" />
+		<many-to-one name="mortgager" column="mortgager_id" class="Mortgager" />
 		<property name="repaymentBankName" type="java.lang.String">
 			<column name="repayment_bank_name" />
 		</property>
-		<many-to-one name="store" column="store_id"
-			class="Store" />
+		<many-to-one name="store" column="store_id" class="Store" />
 		<property name="carValueAtion" type="double">
 			<column name="car_valuation" />
 		</property>
 		<property name="purchasePrice" type="double">
 			<column name="purchase_price" />
-		</property>	
+		</property>
 		<property name="purchaseDate" type="java.util.Date">
 			<column name="purchase_date" />
-		</property>	
+		</property>
 		<property name="lateFee" type="double">
 			<column name="late_fee" />
-		</property>	
+		</property>
 		<property name="overdueDays" type="int">
 			<column name="overdue_days" />
-		</property>	
+		</property>
 		<property name="mentionPay" type="double">
 			<column name="mentionPay" />
 		</property>
 		<property name="surplusCapital" type="double">
 			<column name="surplus_capital" />
-		</property>	
+		</property>
 		<property name="surplusInterest" type="double">
 			<column name="surplus_interest" />
-		</property>	
+		</property>
 		<property name="surplusOtherFee" type="double">
 			<column name="surplus_other_fee" />
-		</property>	
+		</property>
 		<property name="sellerDefaultDate" type="java.util.Date">
-            <column name="seller_default_date" />
-		</property>	
+			<column name="seller_default_date" />
+		</property>
 		<property name="trailCarDate" type="java.util.Date">
-            <column name="trail_car_date" />
-		</property>	
+			<column name="trail_car_date" />
+		</property>
 		<property name="sellCarDate" type="java.util.Date">
-            <column name="sell_car_date" />
-		</property>	
+			<column name="sell_car_date" />
+		</property>
 		<property name="sellCarAmount" type="double">
-            <column name="sell_car_amount" />
-		</property>	
+			<column name="sell_car_amount" />
+		</property>
 		<property name="collectPincipal" type="double">
-            <column name="collect_principal" />
-		</property>	
+			<column name="collect_principal" />
+		</property>
 		<property name="collectInterest" type="double">
-            <column name="collect_interest" />
-		</property>	
+			<column name="collect_interest" />
+		</property>
 		<property name="collectLateFee" type="double">
-            <column name="collect_latefee" />
-		</property>	
+			<column name="collect_latefee" />
+		</property>
 		<property name="hasFlagPincipal" type="double">
-            <column name="hasFlag_principal" />
+			<column name="hasFlag_principal" />
 		</property>
 		<property name="hasFlagLateFee" type="double">
-            <column name="hasFlag_latafee" />
-        </property>
-        <property name="hasFlagInterest" type="double">
-            <column name="hasFlag_interest" />
+			<column name="hasFlag_latafee" />
+		</property>
+		<property name="hasFlagInterest" type="double">
+			<column name="hasFlag_interest" />
 		</property>
 		<many-to-one name="contractManageType" column="contract_manage_type_id"
-			class="ContractManageType" />	
-		 <property name="contractManageValue" type="double">
-            <column name="contract_manage_value" />
+			class="ContractManageType" />
+		<property name="contractManageValue" type="double">
+			<column name="contract_manage_value" />
 		</property>
+
 		<set name="contractLenders" inverse="true" cascade="all">
 			<key column="cus_contract_id" />
-			<one-to-many class="ContractLender"/>
+			<one-to-many class="ContractLender" />
 		</set>
 		<set name="contractLateFees" inverse="true" cascade="all">
 			<key column="cus_contract_id" />
-			<one-to-many class="ContractLateFee"/>
+			<one-to-many class="ContractLateFee" />
 		</set>
 		<set name="contractOverdueAmounts" inverse="true" cascade="all">
 			<key column="cus_contract_id" />
-			<one-to-many class="ContractOverdueAmount"/>
+			<one-to-many class="ContractOverdueAmount" />
 		</set>
 		<set name="contractParas" inverse="true" cascade="all">
 			<key column="cus_contract_id" />
-			<one-to-many class="ContractPara"/>
+			<one-to-many class="ContractPara" />
 		</set>
 		<set name="contractStages" inverse="true" cascade="all">
 			<key column="cus_contract_id" />
-			<one-to-many class="ContractStage"/>
+			<one-to-many class="ContractStage" />
 		</set>
 		<set name="contractUploadfiles" inverse="true" cascade="all">
 			<key column="cus_contract_id" />
-			<one-to-many class="ContractUploadfile"/>
+			<one-to-many class="ContractUploadfile" />
 		</set>
 		<set name="cusContractCosts" inverse="true" cascade="all">
 			<key column="cus_contract_id" />
-			<one-to-many class="CusContractCost"/>
+			<one-to-many class="CusContractCost" />
 		</set>
 		<set name="gpsLatefes" inverse="true" cascade="all">
 			<key column="cus_contract_id" />
-			<one-to-many class="ContractGpsLateFee"/>
+			<one-to-many class="ContractGpsLateFee" />
 		</set>
-		
+
 		<set name="gpsinstalls" inverse="true" cascade="all">
 			<key column="cus_contract_id" />
-			<one-to-many class="Gpsinstall"/>
+			<one-to-many class="Gpsinstall" />
 		</set>
 		<set name="ContractBorrowerSet" inverse="true" cascade="all">
 			<key column="contract_id" />
-			<one-to-many class="ContractBorrower"/>
+			<one-to-many class="ContractBorrower" />
 		</set>
 	</class>
 </hibernate-mapping>

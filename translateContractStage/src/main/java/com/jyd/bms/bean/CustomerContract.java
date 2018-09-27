@@ -36,9 +36,9 @@ public class CustomerContract implements Serializable {
 	private String vin;
 	private int state;
 	private Date startDate; // 合同开始日期
-	private Date endDate;//合同结束日期
-	private Date realLoanDate;//合同放款开始日期
-	private Date realLoanEndDate;//合同放款结束日期
+	private Date endDate;// 合同结束日期
+	private Date realLoanDate;// 合同放款开始日期
+	private Date realLoanEndDate;// 合同放款结束日期
 	private Date settlementDate;// 结清日期
 	private String vehicleModel;
 	private CustomerInfo customerInfo;
@@ -87,21 +87,52 @@ public class CustomerContract implements Serializable {
 	private String bidAmountUapper;// 上标金额大写
 	private String amountUapper;// 借款金额大写
 	private double returnPointNum;// 返点数
-	private double surplusCapital;//剩余本金
-	private double surplusInterest;//剩余本金
-	private double surplusOtherFee;//剩余本金
-	// 邮箱
-	private String email;
-
+	private double surplusCapital;// 剩余本金
+	private double surplusInterest;// 剩余本金
+	private double surplusOtherFee;// 剩余本金
+	private String email;// 邮箱
 	private BaCalcStageVersion stageVersion;// 分期计算版本
-	private RepaymentType repaymentType;//分期方式
+	private RepaymentType repaymentType;// 分期方式
+	private int renewal;// 是否续期，标记为1，则该合同续期。默认为0
+	private ProductType productType;// 产品类型
+	private String proType;// 产品类型
+	private int feeStage;// 服务费期数
+	private BaProductClassify baProductClassify;//产品分类
+	private BaSettlementType baSettlementType;//结清类型
+	private Employee followEmployee;//追踪人
 	
-	private int renewal;//是否续期，标记为1，则该合同续期。默认为0
-	
-	private ProductType productType;
-	private String ProType;
-	
-	
+	public Employee getFollowEmployee() {
+		return followEmployee;
+	}
+
+	public void setFollowEmployee(Employee followEmployee) {
+		this.followEmployee = followEmployee;
+	}
+
+	public BaSettlementType getBaSettlementType() {
+		return baSettlementType;
+	}
+
+	public void setBaSettlementType(BaSettlementType baSettlementType) {
+		this.baSettlementType = baSettlementType;
+	}
+
+	public BaProductClassify getBaProductClassify() {
+		return baProductClassify;
+	}
+
+	public void setBaProductClassify(BaProductClassify baProductClassify) {
+		this.baProductClassify = baProductClassify;
+	}
+
+	public int getFeeStage() {
+		return feeStage;
+	}
+
+	public void setFeeStage(int feeStage) {
+		this.feeStage = feeStage;
+	}
+
 	public ProductType getProductType() {
 		return productType;
 	}
@@ -111,11 +142,11 @@ public class CustomerContract implements Serializable {
 	}
 
 	public String getProType() {
-		return ProType;
+		return proType;
 	}
 
 	public void setProType(String proType) {
-		ProType = proType;
+		this.proType = proType;
 	}
 
 	public Date getRealLoanEndDate() {

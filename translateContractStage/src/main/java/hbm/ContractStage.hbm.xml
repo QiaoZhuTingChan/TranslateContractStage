@@ -25,6 +25,9 @@
 		<property name="repaymentDate" type="java.util.Date">
 			<column name="repayment_date" />
 		</property>
+		<property name="realrepaymentDate" type="java.util.Date">
+			<column name="real_repayment_date" />
+		</property>
 		<property name="state" type="int">
 			<column name="state" />
 		</property>
