@@ -68,12 +68,12 @@ import com.jyd.translateContractStage.POIUtil;
 
 public class App {
 
-	private static final int rowMaxNum = 10000;// 行最大数
+	private static final int rowMaxNum = 5000;// 行最大数
 	// private static final String logpath =
 	// "/home/aa/Desktop/laoda/zhengzhou1补/logerror.txt";
 	// private static final String logpath =
 	// "/home/aa/Desktop/laoda/xinxiang1/logerror.txt";
-	private static final String logpath = "/home/aa/Desktop/laoda/mengcheshijai/logerror.txt";
+	private static final String logpath = "/home/aa/Desktop/laoda/likedai1/logerror.txt";
 	private static ClassPathXmlApplicationContext context;
 	// private static final String path = "/home/aa/Desktop/laoda/xuchang1.xls";
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -230,10 +230,11 @@ public class App {
 		String[] arr_guobiao = { "3", "91440300MA5DA69B6U", "深圳市前海深港合作区前湾一路1号A栋201室", "国标融资租赁（深圳）有限公司" };
 		String[] arr_houguan = { "7", "91440300MA4X04UU4M", "郑州市金水区金水路219号楼1单元15层", "上海厚冠信息咨询有限公司郑州分公司" };
 		String[] arr_lianrongshangwu = { "9", "91410105MA3XDKPE1J", "郑州市金水区花园路39号6号楼1803号", "郑州市联融商务信息咨询有限公司" };
-		String[] arr_lianrongtouzi = { "10", "91441900MA4UJY1H30", "东莞市东城区火炼树东莞大道11号台商大厦1单元办公702",
+		String[] arr_lianrongtouzi = { "5", "91441900MA4UJY1H30", "东莞市东城区火炼树东莞大道11号台商大厦1单元办公702",
 				"广州市联融投资咨询有限公司东莞分公司" };
-		String[] arr_shanyin = { "10", "91441900MA4X04UU1M", "东莞市南城街道商业中心B座1209号", "闪银融资租赁（上海）有限公司东莞分公司" };
-		String[] arr_guansutouzi = { "10", "91441900MA4W3KW24U", "东莞市东城街道火炼树社区东莞大道11号台商大厦1单元办公1701", "东莞市莞速投资咨询有限公司" };
+		String[] arr_shanyin = { "4", "91441900MA4X04UU1M", "东莞市南城街道商业中心B座1209号", "闪银融资租赁（上海）有限公司东莞分公司" };
+		String[] arr_guansutouzi = { "6", "91441900MA4W3KW24U", "东莞市东城街道火炼树社区东莞大道11号台商大厦1单元办公1701", "东莞市莞速投资咨询有限公司" };
+		String[] arr_lesong = { "10", "91440101MA59JPFX1K", "广州市越秀区越秀北路319号401自编318D房", "广东乐颂信息科技有限公司" };
 
 		mortgager.put("国标", arr_guobiao);
 		mortgager.put("厚冠", arr_houguan);
@@ -241,6 +242,7 @@ public class App {
 		mortgager.put("联融投资", arr_lianrongtouzi);
 		mortgager.put("闪银", arr_shanyin);
 		mortgager.put("莞速投资", arr_guansutouzi);
+		mortgager.put("乐颂", arr_lesong);
 	}
 
 	private static void packagerepayAccount() {
@@ -289,7 +291,6 @@ public class App {
 		storeMap.put("广州分中心", 21);
 		storeMap.put("东莞分中心", 22);
 		storeMap.put("名车世家", 23);
-		storeMap.put("立刻贷广州一店", 7);
 	}
 
 	public static boolean isExcelOk(String path) {
@@ -841,6 +842,12 @@ public class App {
 					customerContract.setProType(input.getValue(contractnoRow, 3));
 
 					String[] storeAccount = repayAccount.get(input.getValue(contractnoRow, 4));
+					
+					if(storeAccount == null) {
+						throw new RuntimeException("门店名称为空："+customerContract.getContractNum()+"\t"+sheetName+"\t"+contractnoRow);
+					}
+				
+					
 					Store store = new Store();
 					store.setId(Integer.parseInt(storeAccount[0]));
 					customerContract.setStore(store);
@@ -940,6 +947,11 @@ public class App {
 					if (!input.getValue(phoneRow, 15).equals("")) {
 						String[] mortgagors = getMortgager(input.getValue(phoneRow, 15));
 						// String[] mortgagors = mortgager.get(input.getValue(phoneRow, 15));
+						
+						if(mortgagors == null) {
+							throw new RuntimeException("抵押人有数据，但匹配不对："+customerContract.getContractNum()+"\t"+sheetName+"\t"+(phoneRow+1)+"\t"+input.getValue(phoneRow, 15));
+						}
+						
 						customerContract.setMortgagor(mortgagors[3]);
 						Mortgager mo = new Mortgager();
 						mo.setId(Integer.parseInt(mortgagors[0]));
@@ -1271,10 +1283,19 @@ public class App {
 									+ customerContract.getContractNum() + "\t" + repaymentDate);
 						}
 						contractRepayment.setRepaymentDate(sdf.parse(repaymentDate));
-						double overduePaymentss = roundHalfUp(input.getValue(rowIndex, 5));// 实收逾期费
+//						double overduePaymentss = roundHalfUp(input.getValue(rowIndex, 5));// 实收逾期费
+						
+						double overduePaymentss = 0.00;// 实收逾期费
+						if (input.getValue(rowIndex, 5).contains("/")) {
+							String stri = input.getValue(rowIndex, 5).replace("/", ".");
+							overduePaymentss = roundHalfUp(stri);
+						} else {
+							overduePaymentss = roundHalfUp(input.getValue(rowIndex, 5));
+						}
+						contractRepayment.setLateFee(overduePaymentss);
+						
 						contractRepayment.setRemark("excel表数据导入");
 						contractRepayment.setStage(contractStages);
-						contractRepayment.setLateFee(overduePaymentss);
 						contractRepayment.setCreateDate(timestamp);
 						contractRepayment.setUpdateDate(timestamp);
 						contractRepayment.setCreateUser("admin");
@@ -1352,7 +1373,7 @@ public class App {
 			}
 
 		} catch (Exception e) {
-			throw new RuntimeException("格式转换错误：" + value);
+			throw new RuntimeException("格式转换错误：" +customerContract.getContractNum()+"\t"+ value);
 		}
 		return doubleValue;
 	}

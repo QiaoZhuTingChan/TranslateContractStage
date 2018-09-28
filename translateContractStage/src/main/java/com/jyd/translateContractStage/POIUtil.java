@@ -344,7 +344,26 @@ public class POIUtil {
 						sb.append(split[2]);
 					}
 					cellValue = sb.toString();
+				}else if(cellValue.matches("(\\d{4})\\.(\\d{1,2})\\.(\\d{1,2})")) {
+					StringBuilder sb = new StringBuilder();
+					String[] split = cellValue.split("\\.");
+					
+					sb.append(split[0]);//年
+					sb.append("-");
+					if(!split[1].matches("\\d{2}")) {//月
+						sb.append("0"+split[1]);
+					}else {
+						sb.append(split[1]);
+					}
+					sb.append("-");
+					if(!split[2].matches("\\d{2}")) {//日
+						sb.append("0"+split[2]);
+					}else {
+						sb.append(split[2]);
+					}
+					cellValue = sb.toString();
 				}
+				
 				
 				break;
 
