@@ -481,6 +481,11 @@ public class App {
 								sb.append(sheetName + "\t" + (phoneRow + 1) + "\t" + contractno + " 请检查一下前置数据！！" + "\t"
 										+ input.getValue(phoneRow, 5)).append("\n");
 							}
+							if (input.getValue(phoneRow, 5).equals("")) {
+								sb.append(sheetName + "\t" + (phoneRow + 1) + "\t" + contractno + " 前置数据为空，请确认数据！！" + "\t"
+										+ input.getValue(phoneRow, 5)).append("\n");
+							}
+							
 						}
 						if (!(0 <= roundHalfUp(input.getValue(phoneRow, 6))
 								&& roundHalfUp(input.getValue(phoneRow, 6)) <= 5)) {
