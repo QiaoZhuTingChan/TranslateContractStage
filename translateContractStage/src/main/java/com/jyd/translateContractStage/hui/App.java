@@ -39,6 +39,7 @@ import com.jyd.bms.bean.Lender;
 import com.jyd.bms.bean.Mortgager;
 import com.jyd.bms.bean.ParkingFee;
 import com.jyd.bms.bean.ProductParameter;
+import com.jyd.bms.bean.ProductType;
 import com.jyd.bms.bean.RepaymentStage;
 import com.jyd.bms.bean.RepaymentType;
 import com.jyd.bms.bean.Store;
@@ -146,12 +147,14 @@ public class App {
 	private static Map<String, String[]> repayAccount = new HashMap<String, String[]>();
 	private static Map<Integer, Integer> stageMap = new HashMap();
 	private static Map<Integer, Integer> lenderMap = new HashMap();// 出借人
+	private static Map<String, Integer> productTypeMap = new HashMap();// 产品类型
 	static {
 		packagestoreMap();
 		packagerepayAccount();
 		packagemortgager();
 		packagestageMap();
 		packagelenderMap();
+		packageProductTypeMap();
 
 		// context = new ClassPathXmlApplicationContext("config/spring.xml");
 	}
@@ -179,6 +182,18 @@ public class App {
 		cusContractRepaymentOtherFeeService = context.getBean(CusContractRepaymentOtherFeeService.class);
 
 		deleteDataService = context.getBean(DeleteDataService.class);
+	}
+
+	private static void packageProductTypeMap() {
+
+		productTypeMap.put("全款车不押车", 4);// 名称 id
+		productTypeMap.put("按揭车不押车", 5);
+		productTypeMap.put("押车", 6);
+		productTypeMap.put("全款车押车", 7);
+		productTypeMap.put("按揭车押车", 8);
+		productTypeMap.put("优信贷", 9);
+		productTypeMap.put("优车贷", 10);
+
 	}
 
 	private static void packagelenderMap() {
@@ -377,6 +392,10 @@ public class App {
 
 				int countstage = 0;// 校验分期
 				int checkRepaymentstage = 0;// 校验重复还款期数
+				
+				String startDateStr = ""; //合同开始时间跟分期的0期时间校验
+//				String endDateStr = "";   //合同结束时间跟分期的最后一期时间校验
+				
 				for (; rowIndex < rowMaxNum; rowIndex++) {
 					Row row = input.getRow(rowIndex);
 					if (row == null) {
@@ -434,7 +453,7 @@ public class App {
 							contractno = input.getValue(contractnoRow, 0);
 							System.out.print("\t" + input.getValue(contractnoRow, i));
 						}
-						
+
 						if (contractno.equals("")) {
 							sb.append(sheetName + "\t" + (contractnoRow + 1) + "\t" + contractno + " 合同编号为空！！" + "\t"
 									+ input.getValue(contractnoRow, 1)).append("\n");
@@ -452,6 +471,9 @@ public class App {
 						 * phoneRow
 						 */
 						for (int i = 0; i < 20; i++) {
+							
+							startDateStr = input.getValue(phoneRow, 10);
+							
 							// stage = Integer.parseInt(input.getValue(phoneRow, 7));
 							try {
 								stage = (int) Double.parseDouble(input.getValue(phoneRow, 7));
@@ -482,10 +504,10 @@ public class App {
 										+ input.getValue(phoneRow, 5)).append("\n");
 							}
 							if (input.getValue(phoneRow, 5).equals("")) {
-								sb.append(sheetName + "\t" + (phoneRow + 1) + "\t" + contractno + " 前置数据为空，请确认数据！！" + "\t"
-										+ input.getValue(phoneRow, 5)).append("\n");
+								sb.append(sheetName + "\t" + (phoneRow + 1) + "\t" + contractno + " 前置数据为空，请确认数据！！"
+										+ "\t" + input.getValue(phoneRow, 5)).append("\n");
 							}
-							
+
 						}
 						if (!(0 <= roundHalfUp(input.getValue(phoneRow, 6))
 								&& roundHalfUp(input.getValue(phoneRow, 6)) <= 5)) {
@@ -535,6 +557,14 @@ public class App {
 							sb.append(sheetName + "\t" + (brandRow + 1) + "\t" + contractno + " gps费跟停车费都大于0，不对" + "\t")
 									.append("\n");
 						}
+						if (roundHalfUp(input.getValue(brandRow, 9)) == 500) {
+							sb.append(sheetName + "\t" + (brandRow + 1) + "\t" + contractno + " gps费等于500，请检查合同gps费是不是一次性收" + "\t")
+									.append("\n");
+						}
+						if (roundHalfUp(input.getValue(brandRow, 9)) == 450) {
+							sb.append(sheetName + "\t" + (brandRow + 1) + "\t" + contractno + " gps费等于450，请检查合同gps费是不是一次性收" + "\t")
+							.append("\n");
+						}
 
 						if (input.getValue(brandRow, 10).matches("(\\d{4})-(\\d{1,2})-(\\d{1,2})")) {
 							sb.append(sheetName + "\t" + (brandRow + 1) + "\t" + contractno + " 的停车费为日期！！" + "\t"
@@ -572,6 +602,11 @@ public class App {
 							if (checkParkingFee != roundHalfUp(input.getValue(rowIndex, 2))) {
 								sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + "请检查此份合同分期中的停车费是否填写"
 										+ "\t" + input.getValue(rowIndex, 2)).append("\n");
+							}
+							
+							if (!startDateStr.equals(input.getValue(rowIndex, 9))) {
+								sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + "请检查此份合同分期中的还款时间是否跟合同的开始时间，结束时间一致"
+										+ "\t" + input.getValue(rowIndex, 9)+"\t"+startDateStr).append("\n");
 							}
 
 						}
@@ -652,7 +687,7 @@ public class App {
 							sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + " 实还款金额格式不对！！" + "\t"
 									+ input.getValue(rowIndex, 2)).append("\n");
 						}
-						if(roundHalfUp(input.getValue(rowIndex, 0)) != 0 && !input.getValue(rowIndex, 3).equals("")) {
+						if (roundHalfUp(input.getValue(rowIndex, 0)) != 0 && !input.getValue(rowIndex, 3).equals("")) {
 							if (!input.getValue(rowIndex, 3).matches(dateRegexp)) {
 								sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + "还款日期格式不对！！" + "\t"
 										+ input.getValue(rowIndex, 3)).append("\n");
@@ -847,12 +882,12 @@ public class App {
 					customerContract.setProType(input.getValue(contractnoRow, 3));
 
 					String[] storeAccount = repayAccount.get(input.getValue(contractnoRow, 4));
-					
-					if(storeAccount == null) {
-						throw new RuntimeException("门店名称为空："+customerContract.getContractNum()+"\t"+sheetName+"\t"+contractnoRow);
+
+					if (storeAccount == null) {
+						throw new RuntimeException("门店名称为空：" + customerContract.getContractNum() + "\t" + sheetName
+								+ "\t" + contractnoRow);
 					}
-				
-					
+
 					Store store = new Store();
 					store.setId(Integer.parseInt(storeAccount[0]));
 					customerContract.setStore(store);
@@ -860,6 +895,16 @@ public class App {
 					customerContract.setRepayName(storeAccount[1]);
 					customerContract.setRepaymentBankName(storeAccount[2]);
 					customerContract.setRepayAccount(storeAccount[3]);
+
+					if (!input.getValue(contractnoRow, 5).equals("")) {
+						String proType = getProductType(input.getValue(contractnoRow, 5));
+						if (proType != null) {
+							ProductType productType = new ProductType();
+							productType.setId(productTypeMap.get(proType));
+							customerContract.setProductType(productType);
+							customerContract.setProType(proType);
+						}
+					}
 
 					/**
 					 * phoneRow
@@ -940,8 +985,8 @@ public class App {
 					customerContract.setRealLoanDate(customerContract.getStartDate());
 					customerContract.setRealLoanEndDate(customerContract.getEndDate());
 					BaProductClassify baProductClassify = new BaProductClassify();
-					baProductClassify.setId(1);//车贷
-					customerContract.setBaProductClassify(baProductClassify );
+					baProductClassify.setId(1);// 车贷
+					customerContract.setBaProductClassify(baProductClassify);
 
 					// HSSFCell interest = contractNumRows.getCell(12);
 					// HSSFCell capital = contractNumRows.getCell(13);
@@ -952,11 +997,12 @@ public class App {
 					if (!input.getValue(phoneRow, 15).equals("")) {
 						String[] mortgagors = getMortgager(input.getValue(phoneRow, 15));
 						// String[] mortgagors = mortgager.get(input.getValue(phoneRow, 15));
-						
-						if(mortgagors == null) {
-							throw new RuntimeException("抵押人有数据，但匹配不对："+customerContract.getContractNum()+"\t"+sheetName+"\t"+(phoneRow+1)+"\t"+input.getValue(phoneRow, 15));
+
+						if (mortgagors == null) {
+							throw new RuntimeException("抵押人有数据，但匹配不对：" + customerContract.getContractNum() + "\t"
+									+ sheetName + "\t" + (phoneRow + 1) + "\t" + input.getValue(phoneRow, 15));
 						}
-						
+
 						customerContract.setMortgagor(mortgagors[3]);
 						Mortgager mo = new Mortgager();
 						mo.setId(Integer.parseInt(mortgagors[0]));
@@ -1025,6 +1071,10 @@ public class App {
 					}
 					// 封装数据////////////////////////////////////////////////////////
 
+					if(customerContract.getContractNum().equals("0020CF20161215-1")) {
+						System.out.println();
+					}
+					
 					contractStage = new ContractStage();
 
 					contractStage.setStage((int) Double.parseDouble(input.getValue(rowIndex, 0)));
@@ -1037,7 +1087,7 @@ public class App {
 					contractStage.setContract(customerContract);
 					double interest = roundHalfUp(input.getValue(rowIndex, 4));
 					contractStage.setInterest(interest + serviceFee);
-					
+
 					double capital = 0.0;
 					if (input.getValue(rowIndex, 5).contains("/")) {
 						String stri = input.getValue(rowIndex, 5).replace("/", ".");
@@ -1057,8 +1107,27 @@ public class App {
 					contractStage.setCreateUser("admin");
 					contractStage.setUpdateUser("admin");
 
+					
+					//最后一期校验
+					if(contractStage.getStage() == getRepaymentStage(customerContract)) {
+						if(getRepaymentStage(customerContract) == 0) {
+							throw new RuntimeException("不是最后一期，请检查！！");
+						}
+						
+						if(contractStage.getRepaymentDate().getTime() != customerContract.getEndDate().getTime()) {
+							customerContract.setEndDate(contractStage.getRepaymentDate());
+							customerContract.setRealLoanEndDate(customerContract.getEndDate());
+						}
+					}
+					
 					// 合同分期，默认0期收款
 					if (contractStage.getStage() == 0) {
+						//修改合同表中的合同开始时间
+						if(contractStage.getRepaymentDate().getTime() != customerContract.getStartDate().getTime()) {
+							customerContract.setStartDate(contractStage.getRepaymentDate());
+							customerContract.setRealLoanDate(customerContract.getStartDate());
+						}
+						
 						contractStage.setState(1);
 						ContractRepayment contractRepayment = new ContractRepayment();
 						contractRepayment.setRemark("excel表数据导入");
@@ -1126,7 +1195,7 @@ public class App {
 						int gpsType = 0;
 						int parkingType = 0;
 
-						if (gpsFee >= 1000) {
+						if (gpsFee >= 1000 || gpsFee == 450 || gpsFee == 500) {
 							gpsType = 10;
 						} else if (gpsFee >= 150) {
 							gpsType = 9;
@@ -1288,8 +1357,8 @@ public class App {
 									+ customerContract.getContractNum() + "\t" + repaymentDate);
 						}
 						contractRepayment.setRepaymentDate(sdf.parse(repaymentDate));
-//						double overduePaymentss = roundHalfUp(input.getValue(rowIndex, 5));// 实收逾期费
-						
+						// double overduePaymentss = roundHalfUp(input.getValue(rowIndex, 5));// 实收逾期费
+
 						double overduePaymentss = 0.00;// 实收逾期费
 						if (input.getValue(rowIndex, 5).contains("/")) {
 							String stri = input.getValue(rowIndex, 5).replace("/", ".");
@@ -1298,7 +1367,7 @@ public class App {
 							overduePaymentss = roundHalfUp(input.getValue(rowIndex, 5));
 						}
 						contractRepayment.setLateFee(overduePaymentss);
-						
+
 						contractRepayment.setRemark("excel表数据导入");
 						contractRepayment.setStage(contractStages);
 						contractRepayment.setCreateDate(timestamp);
@@ -1324,6 +1393,50 @@ public class App {
 
 		}
 		System.out.println("结束， 恭喜你没问题！！");
+	}
+
+	private int getRepaymentStage(CustomerContract customerContract2) {
+		for (int stage : stageMap.keySet()) {
+			Integer id = stageMap.get(stage);
+			if(customerContract2.getStage().getId() == id) {
+				return stage;
+			}
+		}
+		return 0;
+	}
+
+	private String getProductType(String value) {
+		if (value.equals("押车")) {
+			return value;
+		}
+
+		if (value.contains("转")) {
+			int index = value.indexOf("转");
+			value = value.substring(0, index);
+		}
+		if (value.equals("按揭押车")) {
+			value = "按揭车押车";
+		}
+		if (value.equals("按揭不押车")) {
+			value = "按揭车不押车";
+		}
+		if (value.equals("全款押车")) {
+			value = "全款车押车";
+		}
+		if (value.equals("全款不押车")) {
+			value = "全款车不押车";
+		}
+
+		for (String name : productTypeMap.keySet()) {
+			if (name.equals("押车")) {
+				continue;
+			}
+			if (value.contains(name) || name.equals(value)) {
+				return name;
+			}
+		}
+
+		return null;
 	}
 
 	private String[] getMortgager(String value) {
@@ -1378,7 +1491,7 @@ public class App {
 			}
 
 		} catch (Exception e) {
-			throw new RuntimeException("格式转换错误：" +customerContract.getContractNum()+"\t"+ value);
+			throw new RuntimeException("格式转换错误：" + customerContract.getContractNum() + "\t" + value);
 		}
 		return doubleValue;
 	}
