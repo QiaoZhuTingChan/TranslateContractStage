@@ -30,6 +30,22 @@ public class TestHui {
 	//
 	//
 	// }
+	
+	@Test
+	public void TestHKId() {
+		String regex = "^[A-Z]?[A-Z]{1}\\d{6}\\([0-9A]{1}\\)$";
+		String value = "H1006283900";
+		
+		if(value.matches(regex)) {
+			System.out.println(true);
+		}else {
+			System.out.println(false);
+		}
+		
+		
+	}
+	
+	
 	@Test
 	public void findChongfu() {
 		List<Integer> list = new ArrayList<>();

@@ -161,8 +161,9 @@ public class DeleteDataDAOImpl extends HibernateBaseTemplate<Object> implements 
 					"	left join cus_contract_repayment ment \n" + 
 					"		on stage.id=ment.cus_contract_stage_id\n" + 
 					"	left join cus_contract_repayment_other_fee otherfee\n" + 
-					"		on otherfee.cus_contract_repayment_id = ment.id\n" + 
-					"	where stage.stage = 0 and stage.cus_contract_id in(\n" + 
+					"		on otherfee.cus_contract_repayment_id = ment.id\n" +
+					"   left join cus_contract cus on cus.id = stage.cus_contract_id\n" +
+					"	where cus.state != 5 and stage.stage = 0 and stage.cus_contract_id in(\n" + 
 					"			select id from cus_contract where store_id = :storeId and  cus_contract_no in (:contractNumList)\n" + 
 					"				);\n" + 
 					"");
@@ -217,7 +218,7 @@ public class DeleteDataDAOImpl extends HibernateBaseTemplate<Object> implements 
 					"		on stage.id=stagefee.cus_contract_stage_id\n" + 
 					"	left join cus_contract_repayment ment \n" + 
 					"		on stage.id=ment.cus_contract_stage_id\n" + 
-					"	where c.id in(select a.id from (\n" + 
+					"	where c.state != 5 and c.id in(select a.id from (\n" + 
 					"			select id from cus_contract where store_id = :storeId and  cus_contract_no in (:contractNumList)\n" + 
 					"			)a);");
 
