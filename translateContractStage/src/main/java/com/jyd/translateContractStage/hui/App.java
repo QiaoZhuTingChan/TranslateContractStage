@@ -74,7 +74,7 @@ public class App {
 	// "/home/aa/Desktop/laoda/zhengzhou1补/logerror.txt";
 	// private static final String logpath =
 	// "/home/aa/Desktop/laoda/xinxiang1/logerror.txt";
-	private static final String logpath = "/home/aa/Desktop/laoda/likedai1/logerror.txt";
+	private static final String logpath = "/home/aa/Desktop/laoda/补合同_sqs/2/漏导合同/logerror.txt";
 	private static ClassPathXmlApplicationContext context;
 	// private static final String path = "/home/aa/Desktop/laoda/xuchang1.xls";
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -250,6 +250,8 @@ public class App {
 		String[] arr_shanyin = { "4", "91441900MA4X04UU1M", "东莞市南城街道商业中心B座1209号", "闪银融资租赁（上海）有限公司东莞分公司" };
 		String[] arr_guansutouzi = { "6", "91441900MA4W3KW24U", "东莞市东城街道火炼树社区东莞大道11号台商大厦1单元办公1701", "东莞市莞速投资咨询有限公司" };
 		String[] arr_lesong = { "10", "91440101MA59JPFX1K", "广州市越秀区越秀北路319号401自编318D房", "广东乐颂信息科技有限公司" };
+		String[] arr_liming = { "1", "360430198106294114", "天河区荷光路怡安苑c栋501房", "李明" };	
+		String[] arr_yiyongkang = { "2", "450923198809182771", "佛山市南海区紫金路1号中海金沙里3座3804", "易永康" };	
 
 		mortgager.put("国标", arr_guobiao);
 		mortgager.put("厚冠", arr_houguan);
@@ -258,6 +260,8 @@ public class App {
 		mortgager.put("闪银", arr_shanyin);
 		mortgager.put("莞速投资", arr_guansutouzi);
 		mortgager.put("乐颂", arr_lesong);
+		mortgager.put("李明", arr_liming);
+		mortgager.put("易永康", arr_yiyongkang);
 	}
 
 	private static void packagerepayAccount() {
@@ -270,6 +274,10 @@ public class App {
 		String[] acount_xinxiang1 = { "13", "侯双锋", "工行新乡分行", "6222 0817 0400 1354 524" };
 		String[] acount_mingche = { "23", "李秀峰", "工行广州创展支行", "6222 0836 0201 6972 967" };
 		String[] acount_likedai1 = { "7", "李明", "工行广州东城支行", "6222083602017540763" };
+		String[] acount_luoyang1 = { "15", "林潮遂", "工行洛阳涧西支行", "6222 0817 0500 4600 565" };
+		String[] acount_xinyang1 = { "14", "付明山", "工行信阳分行", "6222 0817 1800 0841 570	" };
+		String[] acount_guangzhou1 = { "5", "胡全忠", "工行广州名雅支行", "6212 2636 0211 5104 184" };
+		
 
 		repayAccount.put("太原一店", acount_taiyuan);
 		repayAccount.put("许昌一店", acount_xuchang);
@@ -280,6 +288,9 @@ public class App {
 		repayAccount.put("新乡一店", acount_xinxiang1);
 		repayAccount.put("名车世家", acount_mingche);
 		repayAccount.put("立刻贷一店", acount_likedai1);
+		repayAccount.put("洛阳一店", acount_luoyang1);
+		repayAccount.put("信阳一店", acount_xinyang1);
+		repayAccount.put("广州一店", acount_guangzhou1);
 	}
 
 	private static void packagestoreMap() {
@@ -1195,7 +1206,7 @@ public class App {
 						int gpsType = 0;
 						int parkingType = 0;
 
-						if (gpsFee >= 1000 || gpsFee == 450 || gpsFee == 500) {
+						if (gpsFee >= 1000) {// || gpsFee == 450 || gpsFee == 500
 							gpsType = 10;
 						} else if (gpsFee >= 150) {
 							gpsType = 9;
