@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -69,12 +70,13 @@ import com.jyd.translateContractStage.POIUtil;
 
 public class App {
 
-	private static final int rowMaxNum = 5000;// 行最大数
-	// private static final String logpath =
-	// "/home/aa/Desktop/laoda/zhengzhou1补/logerror.txt";
-	// private static final String logpath =
-	// "/home/aa/Desktop/laoda/xinxiang1/logerror.txt";
-	private static final String logpath = "/home/aa/Desktop/laoda/补合同_sqs/2/漏导合同/logerror.txt";
+	private static final int rowMaxNum = 15000;// 行最大数
+	private static final String logpath = "/home/aa/Desktop/laoda/zhengzhou1/findError/logerror.txt";
+//	private static final String logpath = "/home/aa/Desktop/laoda/dongguan1/findError/logerror.txt";
+	
+	
+//	private static final String logpath = "/home/aa/Desktop/laoda/补合同_sqs/3/漏导合同/logerror.txt";
+	
 	private static ClassPathXmlApplicationContext context;
 	// private static final String path = "/home/aa/Desktop/laoda/xuchang1.xls";
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -102,6 +104,9 @@ public class App {
 	private static Set<CusContractRepaymentOtherFee> cusContractRepaymentOtherFeeList = new HashSet<>();
 	private static Set<ContractGpsLateFee> contractGpsLateFeeList = new HashSet<>();
 	private static Set<ContractStageFee> contractStageFeeList = new HashSet<>();// 合同分期费
+	
+	//找错误
+	private static Map<String, String> errorMap = new LinkedHashMap<>();
 
 	// service
 	private static CustomerContractService customerContractService;
@@ -358,6 +363,14 @@ public class App {
 					}
 				}
 			}
+			bw.write("===================错误还款明细的还款时间格式问题：共"+errorMap.size()+"个==============");
+			bw.newLine();
+			if (!errorMap.isEmpty()) {
+				for (String key : errorMap.keySet()) {
+					bw.write("合同编号："+key+", 姓名："+errorMap.get(key));
+					bw.newLine();
+				}
+			}
 
 			bw.flush();
 			bw.close();
@@ -379,6 +392,7 @@ public class App {
 		return flag;
 	}
 
+	
 	private boolean checkContractData(POIUtil input) throws ParseException {
 		int countContract = 0;
 
@@ -397,6 +411,7 @@ public class App {
 				String contractNumber = "";
 				int stage = 0;
 				String contractno = "";// 合同编号
+				String contractname = "";// 姓名
 
 				double checkGpsFee = 0;// 用于检查分期里，是否写上费用
 				double checkParkingFee = 0;// 用于检查分期里，是否写上费用
@@ -462,6 +477,7 @@ public class App {
 						checkContractNumList.add(input.getValue(contractnoRow, 0));
 						for (int i = 0; i < 20; i++) {
 							contractno = input.getValue(contractnoRow, 0);
+							contractname = input.getValue(contractnoRow, 2);
 							System.out.print("\t" + input.getValue(contractnoRow, i));
 						}
 
@@ -693,6 +709,12 @@ public class App {
 						System.out.print(sheetName + " " + contractno + " " + rowIndex + "\t" + nowPosition);
 
 						// 封装数据////////////////////////////////////////////////////////
+						//找出 错误格式还款明细的的还款时间
+						if(!input.getValue(rowIndex, 3).equals("") && roundHalfUp(input.getValue(rowIndex, 2))==0) {
+							if(roundHalfUp(input.getValue(rowIndex, 0)) != 0) {
+								errorMap.put(contractno, contractname+"：第"+roundHalfUp(input.getValue(rowIndex, 0))+"期");
+							}
+						}
 						if (!input.getValue(rowIndex, 2).equals("")
 								&& !input.getValue(rowIndex, 2).matches("\\d+.\\d+")) {
 							sb.append(sheetName + "\t" + (rowIndex + 1) + "\t" + contractno + " 实还款金额格式不对！！" + "\t"
@@ -1206,7 +1228,7 @@ public class App {
 						int gpsType = 0;
 						int parkingType = 0;
 
-						if (gpsFee >= 1000) {// || gpsFee == 450 || gpsFee == 500
+						if (gpsFee >= 1000 || gpsFee == 450 || gpsFee == 500) {// 
 							gpsType = 10;
 						} else if (gpsFee >= 150) {
 							gpsType = 9;
@@ -1326,6 +1348,9 @@ public class App {
 					checkRepaymentstage = repaymentstage;
 					String repaymentDate = input.getValue(rowIndex, 3);
 					if (repaymentDate.equals("") || repaymentDate.equals("0.000000")) {
+						continue;
+					}
+					if(!repaymentDate.equals("") && roundHalfUp(input.getValue(rowIndex, 2))==0) {//0	2017-1-16  跳过
 						continue;
 					}
 
