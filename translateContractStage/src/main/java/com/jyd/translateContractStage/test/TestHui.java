@@ -30,6 +30,15 @@ public class TestHui {
 	//
 	//
 	// }
+	@Test
+	public void testContractNo() {
+		
+		
+	}
+	
+	
+	
+	
 	
 	@Test
 	public void TestHKId() {

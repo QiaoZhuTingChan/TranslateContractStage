@@ -71,8 +71,7 @@ import com.jyd.translateContractStage.POIUtil;
 public class App {
 
 	private static final int rowMaxNum = 15000;// 行最大数
-	private static final String logpath = "/home/aa/Desktop/laoda/zhengzhou1/findError/logerror.txt";
-//	private static final String logpath = "/home/aa/Desktop/laoda/dongguan1/findError/logerror.txt";
+	private static final String logpath = "/home/aa/Desktop/laoda/许昌/findError/findlogerror.txt";
 	
 	
 //	private static final String logpath = "/home/aa/Desktop/laoda/补合同_sqs/3/漏导合同/logerror.txt";
@@ -204,7 +203,7 @@ public class App {
 	private static void packagelenderMap() {
 		// 门店id， 出借人id
 		lenderMap.put(7, 1);
-		// lenderMap.put(16, 1);//16：立刻贷二店 有两个出借人，这里先忽略
+		lenderMap.put(16, 1);//16：立刻贷二店 有两个出借人，这里先忽略
 		// lenderMap.put(16, 2);
 		lenderMap.put(9, 3);
 		lenderMap.put(20, 1);
@@ -257,7 +256,7 @@ public class App {
 		String[] arr_lesong = { "10", "91440101MA59JPFX1K", "广州市越秀区越秀北路319号401自编318D房", "广东乐颂信息科技有限公司" };
 		String[] arr_liming = { "1", "360430198106294114", "天河区荷光路怡安苑c栋501房", "李明" };	
 		String[] arr_yiyongkang = { "2", "450923198809182771", "佛山市南海区紫金路1号中海金沙里3座3804", "易永康" };	
-
+		String[] arr_tangwei = { "11", "360430199707241119", "东莞市南城区东城街道火炼树社区东莞大道11好台商大厦1单元办公0702B", "汤伟" };
 		mortgager.put("国标", arr_guobiao);
 		mortgager.put("厚冠", arr_houguan);
 		mortgager.put("联融商务", arr_lianrongshangwu);
@@ -267,6 +266,7 @@ public class App {
 		mortgager.put("乐颂", arr_lesong);
 		mortgager.put("李明", arr_liming);
 		mortgager.put("易永康", arr_yiyongkang);
+		mortgager.put("汤伟", arr_tangwei);
 	}
 
 	private static void packagerepayAccount() {
@@ -282,8 +282,8 @@ public class App {
 		String[] acount_luoyang1 = { "15", "林潮遂", "工行洛阳涧西支行", "6222 0817 0500 4600 565" };
 		String[] acount_xinyang1 = { "14", "付明山", "工行信阳分行", "6222 0817 1800 0841 570	" };
 		String[] acount_guangzhou1 = { "5", "胡全忠", "工行广州名雅支行", "6212 2636 0211 5104 184" };
+		String[] acount_likedai2 = { "16", "王华", "工行广州东城支行", "6222 0836 0201 7541 118" };
 		
-
 		repayAccount.put("太原一店", acount_taiyuan);
 		repayAccount.put("许昌一店", acount_xuchang);
 		repayAccount.put("郑州二店", acount_zhengzhou2);
@@ -296,6 +296,7 @@ public class App {
 		repayAccount.put("洛阳一店", acount_luoyang1);
 		repayAccount.put("信阳一店", acount_xinyang1);
 		repayAccount.put("广州一店", acount_guangzhou1);
+		repayAccount.put("立刻贷二店", acount_likedai2);
 	}
 
 	private static void packagestoreMap() {
@@ -710,9 +711,11 @@ public class App {
 
 						// 封装数据////////////////////////////////////////////////////////
 						//找出 错误格式还款明细的的还款时间
-						if(!input.getValue(rowIndex, 3).equals("") && roundHalfUp(input.getValue(rowIndex, 2))==0) {
+						if(!input.getValue(rowIndex, 3).equals("") && roundHalfUp(input.getValue(rowIndex, 2).replace("/", "."))==0) {
 							if(roundHalfUp(input.getValue(rowIndex, 0)) != 0) {
-								errorMap.put(contractno, contractname+"：第"+roundHalfUp(input.getValue(rowIndex, 0))+"期");
+								if(!errorMap.containsKey(contractno)) {
+									errorMap.put(contractno, contractname+"：第"+roundHalfUp(input.getValue(rowIndex, 0))+"期");
+								}
 							}
 						}
 						if (!input.getValue(rowIndex, 2).equals("")
@@ -1527,7 +1530,7 @@ public class App {
 			}
 
 		} catch (Exception e) {
-			throw new RuntimeException("格式转换错误：" + customerContract.getContractNum() + "\t" + value);
+//			throw new RuntimeException("格式转换错误：" + customerContract.getContractNum() + "\t" + value);
 		}
 		return doubleValue;
 	}
